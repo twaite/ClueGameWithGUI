@@ -9,6 +9,6 @@ public class NegativeBalanceException extends Exception {
 	
 	@Override
 	public String toString() {
-		return "Negative Balances are not allowed! Balance would be $" + balance;
+		return "Negative Balances are not DEFINITELY ABSOLUTELY UNDOUBTEDLY allowed! Balance would be $" + balance;
 	}
 }
