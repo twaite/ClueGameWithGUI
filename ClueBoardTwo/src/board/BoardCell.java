@@ -10,18 +10,18 @@ public class BoardCell {
 	}
 	
 	public boolean isWalkway(){
-		//return true if the cell is a wlkaway
+		//return false if the cell is not a walkway
 		return false;
 	}
 	
 
 	public boolean isRoom(){
-		//return true if the cell is a room
+		//return false if the cell is not a room
 		return false;
 	}
 	
 	public boolean isDoorway(){
-		//return true if the cell is a doorway
+		//return false if the cell is not a doorway
 		return false;
 	}
 	
