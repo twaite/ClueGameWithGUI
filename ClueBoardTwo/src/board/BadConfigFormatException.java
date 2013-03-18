@@ -14,6 +14,7 @@ public class BadConfigFormatException extends Exception{
 		try {
 		FileWriter out = new FileWriter(outFile,true);
 		out.write(message + "\n");
+		out.close();
 		}
 		catch(IOException e) {
 			System.err.println("exceptionLog.txt does not exist");
