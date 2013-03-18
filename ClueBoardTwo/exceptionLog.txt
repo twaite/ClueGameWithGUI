@@ -1,0 +1,2 @@
+Too few rooms in Legend file
+Too few columns in board file
