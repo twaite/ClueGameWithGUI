@@ -8,15 +8,23 @@ import org.junit.Test;
 
 import board.Board;
 import board.BoardCell;
+import board.Card;
 import board.ClueGame;
 import board.ComputerPlayer;
+import board.HumanPlayer;
+import board.Player;
 import board.Solution;
 
 public class GameActionTests {
 
 	static ClueGame game;
 	static Board board;
-	
+	static Card orezyCard;
+	static Card okygCard;
+	static Card katanaCard;
+	static Card jackhammerCard;
+	static Card conservatoryCard;
+	static Card billiardRoomCard;
 	
 	@BeforeClass
 	public static void setUp() {
@@ -167,22 +175,209 @@ public class GameActionTests {
 		
 	}
 
+	
+	
 	/************************************************************************************************************
- 	* Ensures that 	(1) If a player (human or computer) has a card that's suggested, that card is "shown" (i.e.,
- 	* 						 returned).
-    *			   	(2) If the player has multiple cards that match, the card to be returned is selected randomly.
-    * 				(3) Once a player has shown a card, no other players are queried.
-    * 				(4) In the board game, disproving a suggestion starts with a player to the left of the person
-    * 						making the suggestion. We will modify this somewhat, so that querying the players 
-    * 						will happen from a random starting point. For example, on one suggestion player 0 
-    * 						might be the first to check for match, followed by players 1, 2, 3 etc. On the next 
-    * 						suggestion, player 4 might be the first to check, followed by player 5, human, player
-    * 						 0, etc.
-    * 				(5) The player making the suggestion should not be queried.
-    * 				(6) If none of the other players has any relevant cards, the error value (null) is returned.
+ 	* Ensures that a player returns the correct card (or null if they hold none of the cards) when disproving a 
+ 	* 	suggestion.
  	************************************************************************************************************/
 	@Test
-	public void testDisproveSuggestion() {	
-	
+	public void testDisproveSuggestionOnePlayerOneCorrectMatch() {
+		orezyCard = new Card("Orezy", Card.CardType.PERSON);
+		okygCard = new Card("OkyG", Card.CardType.PERSON);
+		katanaCard = new Card("Katana", Card.CardType.WEAPON);
+		jackhammerCard = new Card("Jackhammer", Card.CardType.WEAPON);
+		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
+		billiardRoomCard = new Card("Billiard Room", Card.CardType.ROOM);
+		
+		
+		Player player = new Player();
+		player.getCardList().add(orezyCard);
+		player.getCardList().add(okygCard);
+		player.getCardList().add(katanaCard);
+		player.getCardList().add(jackhammerCard);
+		player.getCardList().add(conservatoryCard);
+		player.getCardList().add(billiardRoomCard);
+		
+		//Check correct person
+		Assert.assertEquals(player.disproveSuggestion( "Orezy", "Cat", "Hall"), orezyCard );
+		//Check correct weapon
+		Assert.assertEquals(player.disproveSuggestion( "V3R", "Katana", "Hall"), katanaCard );
+		//Check correct room
+		Assert.assertEquals(player.disproveSuggestion( "V3R", "Cat", "Conservatory"), conservatoryCard );
+		//Check nothing
+		Assert.assertEquals(player.disproveSuggestion( "V3R", "Cat", "Hall"), null );
 	}
+	
+	/************************************************************************************************************
+ 	* Ensures that a player has the possibility of returning any of the three cards in a suggestion when 
+ 	* 	disproving the suggestion if they have all three cards from the suggestion.
+ 	************************************************************************************************************/
+	@Test
+	public void testDisproveSuggestionOnePlayerMultipleCorrectMatches() {
+		orezyCard = new Card("Orezy", Card.CardType.PERSON);
+		okygCard = new Card("OkyG", Card.CardType.PERSON);
+		katanaCard = new Card("Katana", Card.CardType.WEAPON);
+		jackhammerCard = new Card("Jackhammer", Card.CardType.WEAPON);
+		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
+		billiardRoomCard = new Card("Billiard Room", Card.CardType.ROOM);
+		
+		Card tempCard = new Card();
+		
+		Player player = new Player();
+		player.getCardList().add( orezyCard );
+		player.getCardList().add( okygCard );
+		player.getCardList().add( katanaCard );
+		player.getCardList().add( jackhammerCard );
+		player.getCardList().add( conservatoryCard );
+		player.getCardList().add( billiardRoomCard );
+		
+		int peopleCounter = 0;
+		int weaponCounter = 0;
+		int roomCounter = 0;
+		
+		for ( int i = 0; i < 100; i ++ ) {
+			tempCard = player.disproveSuggestion( "Orezy", "Jackhammer",  "Conservatory" );
+			if ( tempCard == orezyCard ) {
+				peopleCounter++;
+			} else if (tempCard == jackhammerCard ) {
+				weaponCounter++;
+			} else if (tempCard == conservatoryCard ) {
+				roomCounter++;
+			} else {
+				fail( "Invalid card returned from disproveSuggestion()" );
+			}
+		}
+		
+		
+		//Check that cards are returned all 100 times
+		Assert.assertTrue( peopleCounter + weaponCounter + roomCounter == 100 );
+		
+		//Check that each card is returned at least once
+		Assert.assertTrue( peopleCounter > 0 );
+		Assert.assertTrue( weaponCounter > 0 );
+		Assert.assertTrue( roomCounter > 0 );
+
+	}
+	
+	
+	/************************************************************************************************************
+ 	* Ensures that if multiple players have a card in the suggestion, that the player order is chosen randomly.
+ 	************************************************************************************************************/
+	@Test
+	public void testDisproveSuggestionTwoPlayerOneCorrectMatchEachRandomSelection() {
+		ClueGame clueGame = new ClueGame();
+		
+		orezyCard = new Card("Orezy", Card.CardType.PERSON);
+		okygCard = new Card("OkyG", Card.CardType.PERSON);
+		katanaCard = new Card("Katana", Card.CardType.WEAPON);
+		jackhammerCard = new Card("Jackhammer", Card.CardType.WEAPON);
+		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
+		billiardRoomCard = new Card("Billiard Room", Card.CardType.ROOM);
+		
+		Card tempCard = new Card();
+		
+		Player player1 = new Player();
+		player1.getCardList().add( orezyCard );
+		player1.getCardList().add( okygCard );
+		player1.getCardList().add( katanaCard );
+		Player player2 = new Player();
+		player2.getCardList().add( jackhammerCard );
+		player2.getCardList().add( conservatoryCard );
+		player2.getCardList().add( billiardRoomCard );
+
+		Player accusingPlayer = new Player();
+		
+		clueGame.getPlayerList().add(player1);
+		clueGame.getPlayerList().add(player2);
+
+		clueGame.getPlayerList().add(accusingPlayer);
+
+		
+		int player1Counter = 0;
+		int player2Counter = 0;
+		
+		for ( int i = 0; i < 100; i ++ ) {
+			tempCard = clueGame.handleSuggestion( "Orezy", "Chainsaw", "Conservatory", accusingPlayer);
+			if ( tempCard == orezyCard ) {
+				player1Counter++;
+			} else if (tempCard == conservatoryCard ) {
+				player2Counter++;
+			} else {
+				fail( "Invalid card returned from disproveSuggestion()" );
+			}
+		}
+		
+		
+		//Check that cards are returned all 100 times
+		Assert.assertTrue( player1Counter + player2Counter == 100 );
+		
+		//Check that each card is returned at least once
+		Assert.assertTrue( player1Counter > 1 );
+		Assert.assertTrue( player2Counter > 1 );
+
+	}
+	
+	
+	/************************************************************************************************************
+ 	* Ensures that the player who is making the suggestion does not show one of their own card if they hold the
+ 	*  cards that are part of the suggestion.
+ 	************************************************************************************************************/
+	@Test
+	public void testDisproveSuggestionAccusingPlayerDoesntShowCard() {
+		ClueGame clueGame = new ClueGame();
+		
+		orezyCard = new Card("Orezy", Card.CardType.PERSON);
+		okygCard = new Card("OkyG", Card.CardType.PERSON);
+		katanaCard = new Card("Katana", Card.CardType.WEAPON);
+		jackhammerCard = new Card("Jackhammer", Card.CardType.WEAPON);
+		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
+		billiardRoomCard = new Card("Billiard Room", Card.CardType.ROOM);
+		
+		
+		Player player = new Player();
+		player.getCardList().add(orezyCard);
+		player.getCardList().add(okygCard);
+		player.getCardList().add(katanaCard);
+		player.getCardList().add(jackhammerCard);
+		player.getCardList().add(conservatoryCard);
+		player.getCardList().add(billiardRoomCard);
+		
+		//Check that no card is returned
+		Assert.assertEquals(clueGame.handleSuggestion("Orezy", "Katana", "Conservatory", player), null);
+	}
+	
+	
+	/************************************************************************************************************
+ 	* Ensures that a human player returns the correct card (or null if they hold none of the cards) when 
+ 	* 	disproving a suggestion. 
+ 	************************************************************************************************************/
+	@Test
+	public void testDisproveSuggestionHumanPlayer() {
+		orezyCard = new Card("Orezy", Card.CardType.PERSON);
+		okygCard = new Card("OkyG", Card.CardType.PERSON);
+		katanaCard = new Card("Katana", Card.CardType.WEAPON);
+		jackhammerCard = new Card("Jackhammer", Card.CardType.WEAPON);
+		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
+		billiardRoomCard = new Card("Billiard Room", Card.CardType.ROOM);
+		
+		
+		HumanPlayer player = new HumanPlayer();
+		player.getCardList().add(orezyCard);
+		player.getCardList().add(okygCard);
+		player.getCardList().add(katanaCard);
+		player.getCardList().add(jackhammerCard);
+		player.getCardList().add(conservatoryCard);
+		player.getCardList().add(billiardRoomCard);
+		
+		//Check correct person
+		Assert.assertEquals(player.disproveSuggestion( "Orezy", "Cat", "Hall"), orezyCard );
+		//Check correct weapon
+		Assert.assertEquals(player.disproveSuggestion( "V3R", "Katana", "Hall"), katanaCard );
+		//Check correct room
+		Assert.assertEquals(player.disproveSuggestion( "V3R", "Cat", "Conservatory"), conservatoryCard );
+		//Check nothing
+		Assert.assertEquals(player.disproveSuggestion( "V3R", "Cat", "Hall"), null );
+	}
+	
 }

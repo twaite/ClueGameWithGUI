@@ -66,8 +66,8 @@ public class ClueGame {
  	* 
  	* 	
  	************************************************************************************************************/
-	public void handleSuggestion( String person, String room, String weapon, String accusingPlayer ) {
-		
+	public Card handleSuggestion( String person, String weapon, String room, Player accusingPlayer ) {
+		return new Card();
 	}
 	
 	/************************************************************************************************************

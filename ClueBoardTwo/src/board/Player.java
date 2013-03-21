@@ -12,6 +12,15 @@ public class Player {
 	String lastRoomVisited = "";
 	
 	
+	public Player () {
+		
+	}
+	
+	public Player (String name, String color) {
+		this.name = name;
+		this.color = color;
+	}
+	
 	/************************************************************************************************************
  	* Parameters: String person, String room, String weapon
  	* 
