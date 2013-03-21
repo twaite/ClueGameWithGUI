@@ -380,4 +380,40 @@ public class GameActionTests {
 		Assert.assertEquals(player.disproveSuggestion( "V3R", "Cat", "Hall"), null );
 	}
 	
+	
+	/************************************************************************************************************
+ 	* Ensures that if only a human player can disprove a suggestion, then the human does so.
+ 	************************************************************************************************************/
+	@Test
+	public void testDisproveSuggestionOnlyHumanPlayerCanDisprove() {
+		ClueGame clueGame = new ClueGame();
+		
+		orezyCard = new Card("Orezy", Card.CardType.PERSON);
+		okygCard = new Card("OkyG", Card.CardType.PERSON);
+		katanaCard = new Card("Katana", Card.CardType.WEAPON);
+		jackhammerCard = new Card("Jackhammer", Card.CardType.WEAPON);
+		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
+		billiardRoomCard = new Card("Billiard Room", Card.CardType.ROOM);
+		
+		HumanPlayer humanPlayer = new HumanPlayer();
+		humanPlayer.getCardList().add( orezyCard );
+		humanPlayer.getCardList().add( katanaCard );
+		humanPlayer.getCardList().add( billiardRoomCard );
+		Player player2 = new Player();
+		player2.getCardList().add( okygCard );
+		player2.getCardList().add( jackhammerCard );
+		player2.getCardList().add( conservatoryCard );
+		
+
+		Player accusingPlayer = new Player();
+		
+		clueGame.getPlayerList().add(humanPlayer);
+		clueGame.getPlayerList().add(player2);
+
+		clueGame.getPlayerList().add(accusingPlayer);
+
+
+		Assert.assertEquals(clueGame.handleSuggestion( "Orezy", "Cat", "Hall", accusingPlayer), orezyCard);
+		
+	}
 }
