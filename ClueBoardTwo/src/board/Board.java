@@ -33,6 +33,7 @@ public class Board {
 		adjMtx = new HashMap<Integer, LinkedList<Integer>>();
 		legend = "ClueLegend.txt";
 		board = "ClueLayout.csv";
+		visited = new boolean[ROWS * COLS];
 	}
 	
 	public Board(String board, String legend ) {
@@ -42,6 +43,7 @@ public class Board {
 		adjMtx = new HashMap<Integer, LinkedList<Integer>>();
 		this.board = board;
 		this.legend = legend;
+		visited = new boolean[ROWS * COLS];
 		}
 	
 	public void loadConfigFiles() {
@@ -139,6 +141,10 @@ public class Board {
 		return cells.get(location);
 	}
 
+	public BoardCell getCellAt(int row, int column) {
+		return cells.get(calcIndex(row,column));
+	}
+	
 	public ArrayList<BoardCell> getCells() {
 		return cells;
 	}
@@ -155,7 +161,7 @@ public class Board {
 	public void calcTargets(int location, int steps) {
 		LinkedList<BoardCell> adjs = new LinkedList<BoardCell>();
 		visited[location] = true;
-		for(Integer i : getAdjList(location)) {
+		for( Integer i : getAdjList(location) ) {
 			if(!visited[i])
 				adjs.add(cells.get(i));
 		}
@@ -291,6 +297,8 @@ public class Board {
 	public void startTargets(int location, int steps){
 		//empty targets and set visited to false just in case
 		targets = new HashSet<BoardCell>();
+		
+		
 		Arrays.fill(visited, false);
 		//set start location to true
 		visited[location] = true;

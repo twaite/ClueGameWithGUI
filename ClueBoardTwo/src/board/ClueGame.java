@@ -8,6 +8,7 @@ public class ClueGame {
 	Player humanPlayer = new HumanPlayer();
 	ArrayList<Card> cards = new ArrayList<Card>();
 	ArrayList<Player> players = new ArrayList<Player>();
+	Board board = new Board();
 	int turnIndicator;
 	
 	/************************************************************************************************************
@@ -95,5 +96,9 @@ public class ClueGame {
 	//For Test purposes
 	public void setSolution( Solution newSolution ) {
 		this.solution = newSolution;
+	}
+	
+	public Board getBoard() {
+		return board;
 	}
 }

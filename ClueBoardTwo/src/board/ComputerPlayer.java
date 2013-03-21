@@ -5,8 +5,8 @@ import java.util.Set;
 
 public class ComputerPlayer extends Player {
 
-	public void pickLocation( Set<BoardCell> targets ) {
-		
+	public BoardCell pickLocation( Set<BoardCell> targets ) {
+		return new BoardCell();
 	}
 	
 	public void createSuggestion() {

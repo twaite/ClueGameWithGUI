@@ -9,6 +9,7 @@ public class Player {
 	String color;
 	ArrayList<Card> cards = new ArrayList<Card>();
 	Point Location = new Point();
+	String lastRoomVisited = "";
 	
 	
 	/************************************************************************************************************
@@ -36,4 +37,8 @@ public class Player {
 		return cards;
 	}
 	
+	
+	public void setLastRoomVisited( String roomName ) {
+		this.lastRoomVisited = roomName;
+	}
 }
