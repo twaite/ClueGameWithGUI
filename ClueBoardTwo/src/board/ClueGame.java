@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class ClueGame {
 
-	
+	Solution solution = new Solution();
 	Player humanPlayer = new HumanPlayer();
 	ArrayList<Card> cards = new ArrayList<Card>();
 	ArrayList<Player> players = new ArrayList<Player>();
@@ -74,9 +74,9 @@ public class ClueGame {
  	* 
  	* 	
  	************************************************************************************************************/
-//	public boolean checkAccusation( Solution solution ) {
-//		
-//	}
+	public boolean checkAccusation( Solution solution ) {
+		return true;//Change to correct return value
+	}
 	
 	
 	public Player getHumanPlayer() {
@@ -89,5 +89,11 @@ public class ClueGame {
 	
 	public ArrayList<Player> getPlayerList() {
 		return players;
+	}
+	
+	
+	//For Test purposes
+	public void setSolution( Solution newSolution ) {
+		this.solution = newSolution;
 	}
 }

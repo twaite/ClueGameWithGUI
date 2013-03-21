@@ -2,6 +2,8 @@ package test;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import junit.framework.Assert;
 
@@ -113,46 +115,43 @@ public class GameSetupTests {
 	}
 	
 	/************************************************************************************************************
- 	* Ensures that all cards are dealt, all players have roughly the same number of cards, and one card is not 
- 	* 	given to two different players.
+ 	* Ensures that (1) all cards are dealt, (2) all players have roughly the same number of cards, and (3) one 
+ 	* 	card is not given to two different players.
  	************************************************************************************************************/
 	@Test
 	public void testDeal() {
 		
 		ArrayList<Player> players = new ArrayList<Player>();
-		int totalNumCards = 0;
-		
 		players = game.getPlayerList();
+		Set<Card> cards = new HashSet<Card>();
+		int totalNumCards = 0;
+		int minNumCards = 1000000;
+		int maxNumCards = players.get(0).getCardList().size();
+		int cardListSize;
 		
-		for (Player p : players) {
-			totalNumCards += p.getCardList().size();
-		
-		
+		for ( Player p : players ) {
+			cardListSize = p.getCardList().size();
+			totalNumCards += cardListSize;
+			if ( cardListSize < minNumCards ) {
+				minNumCards = cardListSize; 
+			} else if ( cardListSize > maxNumCards ) {
+				maxNumCards = cardListSize;
+			}
+			for ( Card c : p.getCardList() ) {
+				//(3) Check that the current player does not have a card that is also in the set of cards from the previous players
+				Assert.assertTrue( !(cards.contains( c )) );
+			}
+			cards.addAll(p.getCardList());
 		}
 		
-		//Check that the various players card counts add up to the total number of cards in the deck
-		Assert.assertEquals( totalNumCards, 27);
+		//(1) Check that the various players card counts add up to the total number of cards in the deck
+		Assert.assertEquals( totalNumCards, 24);
 		
-		
-		//STILL IMPLEMENT ASSERT FOR PART 2 AND 3
-		
+		//(2) Check that the number of cards held by the player with the most cards is only at most one more card than the number of cards
+		// held by the player with the least number of cards
+		Assert.assertTrue((maxNumCards - minNumCards) <= 1);
 		
 	}
 	
-	/************************************************************************************************************
- 	* Ensures that the accusation is correct if it contains the correct person, weapon, and room, and that the 
- 	* 	accusation is not correct if the room, person, or weapon, or any two or three of those, are incorrect.
- 	************************************************************************************************************/
-	@Test
-	public void testMakeAnAccusation() {
-		
-	}
 
-	/************************************************************************************************************
- 	* 
- 	************************************************************************************************************/
-	@Test
-	public void testSelectingATargetLocation() {
-		
-	}
 }
