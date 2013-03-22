@@ -148,7 +148,7 @@ public class GameActionTests {
 		board.calcTargets(16, 2, 2);
 		BoardCell selected = new BoardCell();
 		
-		player.setLastRoomVisited("Billiard Room");
+		player.setLastRoomVisited('R');
 		
 		int location_16_0_Total = 0;
 		int location_15_1_Total = 0;

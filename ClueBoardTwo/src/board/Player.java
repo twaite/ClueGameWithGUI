@@ -9,7 +9,7 @@ public class Player {
 	String color;
 	ArrayList<Card> cards = new ArrayList<Card>();
 	Point Location = new Point();
-	String lastRoomVisited = "";
+	char lastRoomVisited;
 	
 	
 	public Player () {
@@ -19,6 +19,12 @@ public class Player {
 	public Player (String name, String color) {
 		this.name = name;
 		this.color = color;
+	}
+	
+	public Player (String name, String color, Point p) {
+		this.name = name;
+		this.color = color;
+		this.Location = p;
 	}
 	
 	/************************************************************************************************************
@@ -47,7 +53,7 @@ public class Player {
 	}
 	
 	
-	public void setLastRoomVisited( String roomName ) {
-		this.lastRoomVisited = roomName;
+	public void setLastRoomVisited( char roomInitial ) {
+		this.lastRoomVisited = roomInitial;
 	}
 }

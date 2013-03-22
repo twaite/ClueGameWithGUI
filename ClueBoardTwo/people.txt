@@ -5,5 +5,5 @@ D0m1n4t0r, Orange, 22, 5
 roxguy, Pink, 22, 15
 elbeast, Purple, 17, 22
 Hook, Black, 11, 22
-Wilson, Yellow,
-Gator, White,
+Wilson, Yellow, 0, 18
+Gator, White, 0, 11

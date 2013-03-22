@@ -13,7 +13,7 @@ public class Solution {
 	public Solution( String person, String weapon, String room ) {
 		this.person = person;
 		this.weapon = weapon;
-		this.room = weapon;
+		this.room = room;
 	}
 
 	public String getPerson() {
@@ -26,6 +26,18 @@ public class Solution {
 
 	public String getRoom() {
 		return room;
+	}
+
+	public void setPerson(String person) {
+		this.person = person;
+	}
+
+	public void setWeapon(String weapon) {
+		this.weapon = weapon;
+	}
+
+	public void setRoom(String room) {
+		this.room = room;
 	}
 	
 	
