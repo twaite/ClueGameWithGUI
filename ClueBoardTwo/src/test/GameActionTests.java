@@ -1,6 +1,9 @@
 package test;
 
 import static org.junit.Assert.*;
+
+import java.awt.Point;
+
 import junit.framework.Assert;
 
 import org.junit.BeforeClass;
@@ -35,6 +38,13 @@ public class GameActionTests {
 		game.loadConfigFiles( "" , "" ); //INSERT FILE NAMES HERE
 		game.deal();
 		
+		//Cards used in later tests
+		orezyCard = new Card("Orezy", Card.CardType.PERSON);
+		okygCard = new Card("OkyG", Card.CardType.PERSON);
+		katanaCard = new Card("Katana", Card.CardType.WEAPON);
+		jackhammerCard = new Card("Jackhammer", Card.CardType.WEAPON);
+		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
+		billiardRoomCard = new Card("Billiard Room", Card.CardType.ROOM);
 	}
 	
 	
@@ -388,13 +398,6 @@ public class GameActionTests {
 	public void testDisproveSuggestionOnlyHumanPlayerCanDisprove() {
 		ClueGame clueGame = new ClueGame();
 		
-		orezyCard = new Card("Orezy", Card.CardType.PERSON);
-		okygCard = new Card("OkyG", Card.CardType.PERSON);
-		katanaCard = new Card("Katana", Card.CardType.WEAPON);
-		jackhammerCard = new Card("Jackhammer", Card.CardType.WEAPON);
-		conservatoryCard = new Card("Conservatory", Card.CardType.ROOM);
-		billiardRoomCard = new Card("Billiard Room", Card.CardType.ROOM);
-		
 		HumanPlayer humanPlayer = new HumanPlayer();
 		humanPlayer.getCardList().add( orezyCard );
 		humanPlayer.getCardList().add( katanaCard );
@@ -416,4 +419,116 @@ public class GameActionTests {
 		Assert.assertEquals(clueGame.handleSuggestion( "Orezy", "Cat", "Hall", accusingPlayer), orezyCard);
 		
 	}
+	
+
+	/************************************************************************************************************
+ 	* Ensures that a Computer Player will make a suggestion based off of cards it has not seen and the room it
+ 	* is in.
+ 	************************************************************************************************************/
+	@Test
+	public void testComputerPlayerMakeSuggestion() {
+	ClueGame clueGame = new ClueGame();
+	
+	Solution correctSuggestion = new Solution( "Orezy", "Cat", "Hall" );
+	ComputerPlayer player = new ComputerPlayer();
+	Point point = new Point(4, 13);
+	player.setLocation(point);
+	player.updateSeen( new Card( "OkyG", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "V3R", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "D0m1n4t0r", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "roxguy", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "elbeast", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "Hook", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "Wilson", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "Gator", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "Boomerang", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Katana", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Jackhammer", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Pen", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Hammer", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Razor", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Chainsaw", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Lasso", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Conservatory", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Kitchen", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Ballroom", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Billiard Room", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Library", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Study", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Dining Room", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Lounge", Card.CardType.ROOM) );
+	
+	Solution suggestion = player.createSuggestion();
+	
+	//Asserts that the Computers Suggestion contains the correct room, weapon, and person
+	Assert.assertEquals(suggestion.getRoom(), correctSuggestion.getRoom());
+	Assert.assertFalse(player.getCardsSeenList().contains( new Card("Cat",Card.CardType.WEAPON)) );
+	Assert.assertFalse(player.getCardsSeenList().contains( new Card("Orezy",Card.CardType.PERSON)) );
+	}
+	
+	/************************************************************************************************************
+ 	* Ensures that a Computer Player will make a suggestion based off of cards it has not seen randomly and the
+ 	* 	room it is in. This test makes sure there are multiple cards the computer has not seen.
+ 	************************************************************************************************************/
+	@Test
+	public void testComputerPlayerMakeSuggestionRandom() {
+	ClueGame clueGame = new ClueGame();
+	
+	ComputerPlayer player = new ComputerPlayer();
+	Point point = new Point(4, 13);
+	player.setLocation(point);
+	player.updateSeen( new Card( "V3R", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "D0m1n4t0r", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "roxguy", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "elbeast", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "Hook", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "Wilson", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "Gator", Card.CardType.PERSON) );
+	player.updateSeen( new Card( "Boomerang", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Katana", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Pen", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Hammer", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Razor", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Chainsaw", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Lasso", Card.CardType.WEAPON) );
+	player.updateSeen( new Card( "Conservatory", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Kitchen", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Ballroom", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Billiard Room", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Library", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Study", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Dining Room", Card.CardType.ROOM) );
+	player.updateSeen( new Card( "Lounge", Card.CardType.ROOM) );
+	
+	int jackhammerCounter = 0;
+	int okygCounter = 0;
+	int catCounter = 0;
+	int orezyCounter = 0;
+	for ( int i = 0; i < 100; i++ ) {
+		Solution suggestion = player.createSuggestion();
+		if ( suggestion.getWeapon() == "Jackhammer" ) {
+			jackhammerCounter++;
+		}
+		if ( suggestion.getWeapon() == "Cat" ) {
+			catCounter++;
+		}
+		if ( suggestion.getPerson() == "Orezy" ) {
+			orezyCounter++;
+		}
+		if ( suggestion.getPerson() == "OkyG" ) {
+			okygCounter++;
+		}
+	}
+	//Asserts that the Computers Suggestion contains the correct room, weapon, and person
+	Assert.assertTrue(jackhammerCounter > 0);
+	Assert.assertTrue(catCounter > 0);
+	Assert.assertTrue(okygCounter > 0);
+	Assert.assertTrue(orezyCounter > 0);
+	
+	//Asserts that the total of the suggestions of either weapon or either person not seen is 100
+	Assert.assertEquals(jackhammerCounter + catCounter, 100);
+	Assert.assertEquals(orezyCounter + okygCounter, 100);
+	
+	}
+	
 }

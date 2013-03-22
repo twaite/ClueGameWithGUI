@@ -121,6 +121,7 @@ public class GameSetupTests {
 	@Test
 	public void testDeal() {
 		
+		game.deal(); 
 		ArrayList<Player> players = new ArrayList<Player>();
 		players = game.getPlayerList();
 		Set<Card> cards = new HashSet<Card>();
