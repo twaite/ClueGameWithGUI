@@ -2,9 +2,9 @@ package board;
 
 public class Solution {
 
-	String person;
-	String weapon;
-	String room;
+	private String person;
+	private String weapon;
+	private String room;
 	
 	public Solution() {
 		

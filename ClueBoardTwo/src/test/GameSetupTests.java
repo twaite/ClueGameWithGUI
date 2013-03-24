@@ -114,6 +114,8 @@ public class GameSetupTests {
 		Assert.assertTrue(cards.contains(tempCard));
 	}
 	
+
+
 	/************************************************************************************************************
  	* Ensures that (1) all cards are dealt, (2) all players have roughly the same number of cards, and (3) one 
  	* 	card is not given to two different players.
@@ -121,7 +123,6 @@ public class GameSetupTests {
 	@Test
 	public void testDeal() {
 		
-		game.deal(); 
 		ArrayList<Player> players = new ArrayList<Player>();
 		players = game.getPlayerList();
 		Set<Card> cards = new HashSet<Card>();
@@ -140,7 +141,12 @@ public class GameSetupTests {
 			}
 			for ( Card c : p.getCardList() ) {
 				//(3) Check that the current player does not have a card that is also in the set of cards from the previous players
-				Assert.assertTrue( !(cards.contains( c )) );
+				for ( Player player : players ) {
+					if (player != p ) {
+						Assert.assertFalse(player.getCardList().contains(c));
+					}
+				}
+				//Assert.assertTrue( !(cards.contains( c )) );
 			}
 			cards.addAll(p.getCardList());
 		}

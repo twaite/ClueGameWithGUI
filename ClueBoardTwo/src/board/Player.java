@@ -5,11 +5,11 @@ import java.util.ArrayList;
 
 public class Player {
 
-	String name;
-	String color;
-	ArrayList<Card> cards = new ArrayList<Card>();
-	Point Location = new Point();
-	char lastRoomVisited;
+	protected String name;
+	protected String color;
+	protected ArrayList<Card> cards = new ArrayList<Card>();
+	protected Point Location = new Point();
+	protected char lastRoomVisited;
 	
 	
 	public Player () {

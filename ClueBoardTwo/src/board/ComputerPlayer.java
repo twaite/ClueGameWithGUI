@@ -25,12 +25,19 @@ public class ComputerPlayer extends Player {
 		Object[] targetsArray = targets.toArray();
 		RoomCell tempRoom, lastRoom = null;
 		
+		
+		//for every boardcell in targets
 		for (BoardCell b : targets) {
+			//if the boardcell is a doorway
 			if (b.isDoorway() ) {
 				tempRoom = (RoomCell) b;
+				//and if it is not the doorway to the last room visited
 				if ( !(tempRoom.getInitial() == lastRoomVisited) ) {
+					//add the doorway to a list of doors that are potential targets
 					doorsOfTargets.add(tempRoom);
+				//if it is the doorway of the last room visited	
 				} else {
+					//store the doorway in lastRoom
 					lastRoom = (RoomCell) b;
 //					int number = Math.random() * 100;
 //					if (number > 95) {
@@ -39,14 +46,27 @@ public class ComputerPlayer extends Player {
 				}
 			}
 		}
-		if (lastRoom == null) {
+//		//if a doorway to the last visited room is not in our targets
+//		if (lastRoom == null) {
+			//and if we have other doors in our targets
 			if (doorsOfTargets.size() != 0) {
+				//randomly choose one of the other doors as the destination
 				return doorsOfTargets.get( (int) Math.random() * doorsOfTargets.size() );
+			//if there are no other doors in our targets	
 			} else
+				//randomly choose one of the walkway cells
+				System.out.println(index);
 				return (BoardCell) targetsArray[index];
-		} else {
-			return (BoardCell) targetsArray[index];
-		}
+		//other wise, if the doorway to the last room visited is not in our targets
+//		} else {
+//			if (doorsOfTargets.size() != 0) {
+//				//randomly choose one of the other doors as the destination
+//				return doorsOfTargets.get( (int) Math.random() * doorsOfTargets.size() );
+//			//if there are no other doors in our targets	
+//			} else
+//				//randomly choose one of the walkway cells
+//				return (BoardCell) targetsArray[index];
+//		}
 		
 		
 		//return new BoardCell();

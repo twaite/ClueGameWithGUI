@@ -33,10 +33,14 @@ public class GameActionTests {
 	public static void setUp() {
 		game = new ClueGame();
 		board = game.getBoard();
-		board.loadConfigFiles();
+	//	board.loadConfigFiles();
 		board.calcAdjacencies();
-		game.loadConfigFiles( "" , "" ); //INSERT FILE NAMES HERE
+	//	game.loadConfigFiles( "" , "" ); //INSERT FILE NAMES HERE
 		game.deal();
+		
+		System.out.println("Board");
+		System.out.println(board);
+		System.out.println("targets size(): " + board.getTargets().size());
 		
 		//Cards used in later tests
 		orezyCard = new Card("Orezy", Card.CardType.PERSON);
@@ -94,7 +98,7 @@ public class GameActionTests {
 			Assert.assertTrue( selected.getColumn() == 19 );
 			Assert.assertTrue( selected.getRow() == 18 );
 		}
-		
+		//START HERE AGAIN NOOBS *******************************************************************
 	}
 
 	

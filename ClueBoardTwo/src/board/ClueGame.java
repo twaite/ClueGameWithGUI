@@ -6,23 +6,27 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 
 public class ClueGame {
 
-	Solution solution = new Solution();
-	Player humanPlayer = new HumanPlayer();
-	ArrayList<Card> cards = new ArrayList<Card>();
-	ArrayList<Player> players = new ArrayList<Player>();
-	Board board = new Board();
-	int turnIndicator;
+	private Solution solution = new Solution();
+	private Player humanPlayer = new HumanPlayer();
+	private ArrayList<Card> cards = new ArrayList<Card>();
+	private ArrayList<Card> cardsDealt = new ArrayList<Card>();
+	private ArrayList<Player> players = new ArrayList<Player>();
+	private Board board = new Board();
+	private int turnIndicator;
 	
 	/************************************************************************************************************
  	* Default constructor
  	************************************************************************************************************/
 	public ClueGame() {
 		loadConfigFiles("people.txt", "cards.txt");
+		board.loadConfigFiles();
 	}
 	
 	/************************************************************************************************************
@@ -30,6 +34,7 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame(String peopleFileName, String cardFileName) {
 		loadConfigFiles(peopleFileName, cardFileName);
+		board.loadConfigFiles();
 	}
 	
 	/************************************************************************************************************
@@ -38,6 +43,76 @@ public class ClueGame {
  	************************************************************************************************************/
 	public void deal() {
 		
+		
+		
+		
+		int numCards = cards.size() - 3;
+		int rand;
+		ArrayList<Card> cardArray = new ArrayList<Card>(cards);
+		boolean foundPlayer = false;
+		boolean foundWeapon = false;
+		boolean foundRoom = false;
+		
+		String[] solutionFields = new String[3];
+		Card randCard = new Card();
+		
+		while (!foundPlayer && !foundWeapon && !foundRoom) {
+			if (!foundPlayer) {
+				rand = (int) ( Math.random() * cardArray.size() );
+				randCard = cardArray.get(rand);
+				if (randCard.getCardType() == Card.CardType.PERSON) {
+					foundPlayer = true;
+					solutionFields[0] = randCard.getName();
+					cardArray.remove(rand);
+				}
+			}
+			
+			if (!foundWeapon) {
+				rand = (int) ( Math.random() * cardArray.size() );
+				randCard = cardArray.get(rand);
+				if (randCard.getCardType() == Card.CardType.WEAPON) {
+					foundWeapon = true;
+					solutionFields[1] = randCard.getName();
+					cardArray.remove(rand);
+				}
+			}
+			
+			if (!foundRoom) {
+				rand = (int) ( Math.random() * cardArray.size() );
+				randCard = cardArray.get(rand);
+				if (randCard.getCardType() == Card.CardType.ROOM) {
+					foundRoom = true;
+					solutionFields[2] = randCard.getName();
+					cardArray.remove(rand);
+				}
+			}
+		}
+		
+		solution = new Solution(solutionFields[0],solutionFields[1],solutionFields[2]);
+		
+		int numPlayers = players.size() - 1;
+	
+														
+		while ( numCards != 0 ) {
+			if (numPlayers == -1) {
+				numPlayers = players.size() - 1;
+			}
+			//Generate rand number to access index
+			rand = (int) ( Math.random() * cardArray.size() );
+			
+			players.get(numPlayers).getCardList().add(cardArray.get(rand));
+			
+			cardsDealt.add(cardArray.get(rand));
+			cardArray.remove(rand);
+			
+			numPlayers--;
+			numCards--;
+		}
+		
+		for (Player p : players) {
+			System.out.println(p.getName() + ":");
+			System.out.println(p.getCardList());
+		}
 	}
 	
 	/************************************************************************************************************
@@ -74,7 +149,7 @@ public class ClueGame {
 			line = input.nextLine();
 			parts = line.split(", ");
 			name = parts[0];
-			System.out.println(name);
+			//System.out.println(name);
 			color = parts[1];
 			convertColor( color );
 			p = new Point( Integer.parseInt(parts[2]), Integer.parseInt(parts[3]) );
@@ -125,12 +200,38 @@ public class ClueGame {
 		
 		while (numOfPeople != 0) {
 			if (input.hasNextLine()) {
-				//START HERE AGAIN YOU PIECES OF POO. GOOD LUCK BTW FUTURE TEAM
+				line = input.nextLine();
+				newCard = new Card( line, Card.CardType.PERSON);
+				cards.add( newCard );
 			} else {
 				throw new BadConfigFormatException( "Specified number of lines in Card file is invalid" );
 			}
+			numOfPeople--;
 		}
 		
+		while (numOfWeps != 0) {
+			if (input.hasNextLine()) {
+				line = input.nextLine();
+				newCard = new Card( line, Card.CardType.WEAPON);
+				cards.add( newCard );
+			} else {
+				throw new BadConfigFormatException( "Specified number of lines in Card file is invalid" );
+			}
+			numOfWeps--;
+		}
+		
+		while (numOfRooms != 0) {
+			if (input.hasNextLine()) {
+				line = input.nextLine();
+				newCard = new Card( line, Card.CardType.ROOM);
+				cards.add( newCard );
+			} else {
+				throw new BadConfigFormatException( "Specified number of lines in Card file is invalid" );
+			}
+			numOfRooms--;
+		}
+		
+		System.out.println( cards );
 	}
 	
 	/************************************************************************************************************
