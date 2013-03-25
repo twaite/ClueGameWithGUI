@@ -7,7 +7,9 @@ public class Solution {
 	private String room;
 	
 	public Solution() {
-		
+		this.person = "";
+		this.weapon = "";
+		this.room = "";
 	}
 	
 	public Solution( String person, String weapon, String room ) {

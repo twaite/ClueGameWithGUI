@@ -252,11 +252,11 @@ public class GameActionTests {
 		
 		for ( int i = 0; i < 100; i ++ ) {
 			tempCard = player.disproveSuggestion( "Orezy", "Jackhammer",  "Conservatory" );
-			if ( tempCard == orezyCard ) {
+			if ( tempCard.equals(orezyCard) ) {
 				peopleCounter++;
-			} else if (tempCard == jackhammerCard ) {
+			} else if (tempCard.equals(jackhammerCard) ) {
 				weaponCounter++;
-			} else if (tempCard == conservatoryCard ) {
+			} else if (tempCard.equals(conservatoryCard) ) {
 				roomCounter++;
 			} else {
 				fail( "Invalid card returned from disproveSuggestion()" );
@@ -313,9 +313,9 @@ public class GameActionTests {
 		
 		for ( int i = 0; i < 100; i ++ ) {
 			tempCard = clueGame.handleSuggestion( "Orezy", "Chainsaw", "Conservatory", accusingPlayer);
-			if ( tempCard == orezyCard ) {
+			if ( tempCard.equals(orezyCard) ) {
 				player1Counter++;
-			} else if (tempCard == conservatoryCard ) {
+			} else if (tempCard.equals(conservatoryCard) ) {
 				player2Counter++;
 			} else {
 				fail( "Invalid card returned from disproveSuggestion()" );

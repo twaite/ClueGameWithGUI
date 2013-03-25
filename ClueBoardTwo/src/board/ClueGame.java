@@ -6,7 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -27,6 +29,7 @@ public class ClueGame {
 	public ClueGame() {
 		loadConfigFiles("people.txt", "cards.txt");
 		board.loadConfigFiles();
+		
 	}
 	
 	/************************************************************************************************************
@@ -109,10 +112,10 @@ public class ClueGame {
 			numCards--;
 		}
 		
-		for (Player p : players) {
-			System.out.println(p.getName() + ":");
-			System.out.println(p.getCardList());
-		}
+//		for (Player p : players) {
+//			System.out.println(p.getName() + ":");
+//			System.out.println(p.getCardList());
+//		}
 	}
 	
 	/************************************************************************************************************
@@ -231,7 +234,12 @@ public class ClueGame {
 			numOfRooms--;
 		}
 		
-		System.out.println( cards );
+		
+		System.out.println("CARDS: " + cards.size());
+		for (Player p : players) {
+			p.setCardsOfGameList(cards);
+		}
+		//System.out.println( cards );
 	}
 	
 	/************************************************************************************************************
@@ -247,7 +255,35 @@ public class ClueGame {
  	* 	
  	************************************************************************************************************/
 	public Card handleSuggestion( String person, String weapon, String room, Player accusingPlayer ) {
-		return new Card();
+		ArrayList<Player> players2 = new ArrayList<Player>(players);
+		players2.remove(accusingPlayer);
+		long seed = System.nanoTime();
+		Collections.shuffle(players2, new Random(seed));
+		//int randIndex;
+		//boolean matchFound = false;
+		Card matchedCard = new Card();
+		
+		for ( Player p : players2 ) {
+			//randIndex = (int) (Math.random() * players2.size());
+			matchedCard = p.disproveSuggestion(person, weapon, room);
+			
+			if ( matchedCard != null) {
+				if (accusingPlayer instanceof ComputerPlayer) {
+					((ComputerPlayer) accusingPlayer).updateSeen(matchedCard);
+				}
+				/////////////////////////////////////////////////////////////////////////
+				//MAY NEED TO UPDATE THE HUMAN PLAYER'S SEEN CARDS LIST HERE AS WELL
+				//
+				/////////////////////////////////////////////////////////////////////////
+				return matchedCard;
+			} 
+//			else {
+//				players2.remove(randIndex);
+//			}
+		}
+
+		
+		return null;
 	}
 	
 	/************************************************************************************************************
