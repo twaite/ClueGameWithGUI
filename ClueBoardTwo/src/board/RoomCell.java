@@ -50,6 +50,10 @@ public class RoomCell extends BoardCell {
 		return roomInitial;
 	}
 	
+	public void setInitial(char roomInitial) {
+		this.roomInitial = roomInitial;
+	}
+	
 	public DoorDirection getDoorDirection() {
 		return doorDirection;
 	}

@@ -20,7 +20,7 @@ public class ClueGame {
 	private ArrayList<Card> cards = new ArrayList<Card>();
 	private ArrayList<Card> cardsDealt = new ArrayList<Card>();
 	private ArrayList<Player> players = new ArrayList<Player>();
-	private Board board = new Board();
+	private Board board;
 	private int turnIndicator;
 	
 	/************************************************************************************************************
@@ -28,8 +28,9 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame() {
 		loadConfigFiles("people.txt", "cards.txt");
+		board = new Board("Clue Board.csv", "Legend.txt");
 		board.loadConfigFiles();
-		
+		board.calcAdjacencies();
 	}
 	
 	/************************************************************************************************************
@@ -37,7 +38,9 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame(String peopleFileName, String cardFileName) {
 		loadConfigFiles(peopleFileName, cardFileName);
+		board = new Board("Clue Board.csv", "Legend.txt");
 		board.loadConfigFiles();
+		board.calcAdjacencies();
 	}
 	
 	/************************************************************************************************************
@@ -59,7 +62,7 @@ public class ClueGame {
 		String[] solutionFields = new String[3];
 		Card randCard = new Card();
 		
-		while (!foundPlayer && !foundWeapon && !foundRoom) {
+		while (!foundPlayer || !foundWeapon || !foundRoom) {
 			if (!foundPlayer) {
 				rand = (int) ( Math.random() * cardArray.size() );
 				randCard = cardArray.get(rand);
@@ -233,9 +236,7 @@ public class ClueGame {
 			}
 			numOfRooms--;
 		}
-		
-		
-		System.out.println("CARDS: " + cards.size());
+				
 		for (Player p : players) {
 			p.setCardsOfGameList(cards);
 		}

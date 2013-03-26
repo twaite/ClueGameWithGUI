@@ -19,15 +19,15 @@ public class Solution {
 	}
 
 	public String getPerson() {
-		return person;
+		return this.person;
 	}
 
 	public String getWeapon() {
-		return weapon;
+		return this.weapon;
 	}
 
 	public String getRoom() {
-		return room;
+		return this.room;
 	}
 
 	public void setPerson(String person) {

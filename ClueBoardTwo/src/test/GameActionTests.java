@@ -34,13 +34,9 @@ public class GameActionTests {
 		game = new ClueGame();
 		board = game.getBoard();
 	//	board.loadConfigFiles();
-		board.calcAdjacencies();
 	//	game.loadConfigFiles( "" , "" ); //INSERT FILE NAMES HERE
 		game.deal();
 		
-		System.out.println("Board");
-		System.out.println(board);
-		System.out.println("targets size(): " + board.getTargets().size());
 		
 		//Cards used in later tests
 		orezyCard = new Card("Orezy", Card.CardType.PERSON);
@@ -98,7 +94,6 @@ public class GameActionTests {
 			Assert.assertTrue( selected.getColumn() == 19 );
 			Assert.assertTrue( selected.getRow() == 18 );
 		}
-		//START HERE AGAIN NOOBS *******************************************************************
 	}
 
 	
@@ -433,8 +428,10 @@ public class GameActionTests {
 	public void testComputerPlayerMakeSuggestion() {
 	ClueGame clueGame = new ClueGame();
 	
+	
 	Solution correctSuggestion = new Solution( "Orezy", "Cat", "Hall" );
-	ComputerPlayer player = new ComputerPlayer();
+	ComputerPlayer player = new ComputerPlayer('H');
+	player.setCardsOfGameList(clueGame.getCardList());
 	Point point = new Point(4, 13);
 	player.setLocation(point);
 	player.updateSeen( new Card( "OkyG", Card.CardType.PERSON) );
@@ -461,7 +458,8 @@ public class GameActionTests {
 	player.updateSeen( new Card( "Study", Card.CardType.ROOM) );
 	player.updateSeen( new Card( "Dining Room", Card.CardType.ROOM) );
 	player.updateSeen( new Card( "Lounge", Card.CardType.ROOM) );
-	
+	clueGame.getPlayerList().add(player);
+		
 	Solution suggestion = player.createSuggestion();
 	
 	//Asserts that the Computers Suggestion contains the correct room, weapon, and person
@@ -478,9 +476,10 @@ public class GameActionTests {
 	public void testComputerPlayerMakeSuggestionRandom() {
 	ClueGame clueGame = new ClueGame();
 	
-	ComputerPlayer player = new ComputerPlayer();
+	ComputerPlayer player = new ComputerPlayer('H');
 	Point point = new Point(4, 13);
 	player.setLocation(point);
+	player.setCardsOfGameList(clueGame.getCardList());
 	player.updateSeen( new Card( "V3R", Card.CardType.PERSON) );
 	player.updateSeen( new Card( "D0m1n4t0r", Card.CardType.PERSON) );
 	player.updateSeen( new Card( "roxguy", Card.CardType.PERSON) );
@@ -510,19 +509,20 @@ public class GameActionTests {
 	int orezyCounter = 0;
 	for ( int i = 0; i < 100; i++ ) {
 		Solution suggestion = player.createSuggestion();
-		if ( suggestion.getWeapon() == "Jackhammer" ) {
+		if ( suggestion.getWeapon().equalsIgnoreCase("Jackhammer") ) {
 			jackhammerCounter++;
 		}
-		if ( suggestion.getWeapon() == "Cat" ) {
+		if ( suggestion.getWeapon().equalsIgnoreCase("Cat") ) {
 			catCounter++;
 		}
-		if ( suggestion.getPerson() == "Orezy" ) {
+		if ( suggestion.getPerson().equalsIgnoreCase("Orezy") ) {
 			orezyCounter++;
 		}
-		if ( suggestion.getPerson() == "OkyG" ) {
+		if ( suggestion.getPerson().equalsIgnoreCase("OkyG") ) {
 			okygCounter++;
 		}
 	}
+
 	//Asserts that the Computers Suggestion contains the correct room, weapon, and person
 	Assert.assertTrue(jackhammerCounter > 0);
 	Assert.assertTrue(catCounter > 0);

@@ -3,6 +3,7 @@ package board;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 public class ComputerPlayer extends Player {
@@ -13,6 +14,12 @@ public class ComputerPlayer extends Player {
 		cardsSeen = new ArrayList<Card>();
 	}
 	
+	//Constructor for testing purposes. (In GameActionTests)
+	public ComputerPlayer(char currentRoom) {
+		cardsSeen = new ArrayList<Card>();
+		this.currentRoom = currentRoom;
+	}
+	
 	public ComputerPlayer (String name, String color, Point p) {
 		cardsSeen = new ArrayList<Card>();
 		this.name = name;
@@ -20,12 +27,16 @@ public class ComputerPlayer extends Player {
 		this.Location = p;
 	}
 
-	public BoardCell pickLocation( Set<BoardCell> targets ) {
+	public BoardCell pickLocation( HashSet<BoardCell> targets ) {
 		int index = (int) ( Math.random() * targets.size() );
 		ArrayList<RoomCell> doorsOfTargets = new ArrayList<RoomCell>();
 		Object[] targetsArray = targets.toArray();
+		ArrayList<BoardCell> targetsArrayList = new ArrayList<BoardCell>();
 		RoomCell tempRoom, lastRoom = null;
 		
+		for (Object o : targetsArray) {
+			targetsArrayList.add((BoardCell) o);
+		}
 		
 		//for every boardcell in targets
 		for (BoardCell b : targets) {
@@ -52,16 +63,13 @@ public class ComputerPlayer extends Player {
 			//and if we have other doors in our targets
 			if (doorsOfTargets.size() != 0) {
 				//randomly choose one of the other doors as the destination
-				currentRoom = doorsOfTargets.get( (int) Math.random() * doorsOfTargets.size() ) .getInitial();
-				return doorsOfTargets.get( (int) Math.random() * doorsOfTargets.size() );
+				RoomCell newBoardCell = doorsOfTargets.get( (int) Math.random() * doorsOfTargets.size() );
+				currentRoom = newBoardCell.getInitial();
+				return newBoardCell;
 			//if there are no other doors in our targets	
 			} else
 				//randomly choose one of the walkway cells
-				System.out.println("index:" + index);
-				for (Object o : targetsArray) {
-					System.out.println("targetsArray:" + o);	
-				}
-				return (BoardCell) targetsArray[index];
+				return targetsArrayList.get(index);
 		//other wise, if the doorway to the last room visited is not in our targets
 //		} else {
 //			if (doorsOfTargets.size() != 0) {
@@ -89,15 +97,13 @@ public class ComputerPlayer extends Player {
 		suggestion.setRoom(initialToString(currentRoom));
 		
 		//populate cardsNotSeen with all of the cards that are not in cardsSeen
-		for (Card c : cardsOfGame) {
+		for (Card c : this.cardsOfGame) {
 			if (cardsSeen.contains(c) == false) {
 				cardsNotSeen.add(c);
 			}
 		}
-		System.out.println("CardsOfGame size: " + cardsOfGame.size());
-		System.out.println("CardsNotSeen Size: " + cardsNotSeen.size());
 		
-		while (!foundPlayer && !foundWeapon) {
+		while (!foundPlayer || !foundWeapon) {
 			//set the person
 			if (!foundPlayer) {
 				randIndex = (int) ( Math.random() * cardsNotSeen.size() );
@@ -127,10 +133,6 @@ public class ComputerPlayer extends Player {
 	
 	public void updateSeen( Card cardSeen ) {
 		cardsSeen.add(cardSeen);
-	}
-	
-	public void setLocation(Point location) {
-		this.Location = location;
 	}
 	
 	public ArrayList<Card> getCardsSeenList() {

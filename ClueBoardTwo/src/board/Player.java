@@ -118,4 +118,7 @@ public class Player {
 			
 	}
 	
+	public void setLocation(Point location) {
+		this.Location = location;
+	}
 }
