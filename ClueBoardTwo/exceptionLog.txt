@@ -1,0 +1,6 @@
+Too few rooms in Legend file
+Too few columns in board file
+Too few rooms in Legend file
+Too few columns in board file
+Too few rooms in Legend file
+Too few columns in board file
