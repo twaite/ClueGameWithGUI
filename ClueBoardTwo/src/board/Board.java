@@ -67,7 +67,7 @@ public class Board {
 			if(input.hasNextLine()) {
 				String line = input.nextLine();
 				String[] parts = line.split(",");
-				if(parts[0].length() == 0 || parts[1].length() == 0) {
+				if(parts[0].length() == 0 || parts[1].length() == 0 || parts[0].length() > 1) {
 					throw new BadConfigFormatException("Bad configuration in Legend file");
 
 				}
@@ -111,6 +111,8 @@ public class Board {
 							newCell = new RoomCell(numRows,j,parts[j].charAt(0),parts[j].charAt(1));
 							cells.add(newCell);
 						}
+					} else {
+						throw new BadConfigFormatException("Room initial does not match any designated Rooms");
 					}
 				}
 				numRows++;

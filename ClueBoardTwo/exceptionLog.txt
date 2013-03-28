@@ -8,3 +8,10 @@ Too few columns in board file
 Too few columns in board file
 Too few rooms in Legend file
 Too few columns in board file
+Too few columns in board file
+Too few columns in board file
+Room initial does not match any designated Rooms
+Too few columns in board file
+Room initial does not match any designated Rooms
+Too few columns in board file
+Room initial does not match any designated Rooms
