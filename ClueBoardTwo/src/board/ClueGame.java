@@ -49,9 +49,6 @@ public class ClueGame {
  	************************************************************************************************************/
 	public void deal() {
 		
-		
-		
-		
 		int numCards = cards.size() - 3;
 		int rand;
 		ArrayList<Card> cardArray = new ArrayList<Card>(cards);
@@ -114,11 +111,6 @@ public class ClueGame {
 			numPlayers--;
 			numCards--;
 		}
-		
-//		for (Player p : players) {
-//			System.out.println(p.getName() + ":");
-//			System.out.println(p.getCardList());
-//		}
 	}
 	
 	/************************************************************************************************************
