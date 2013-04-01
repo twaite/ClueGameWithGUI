@@ -1,8 +1,11 @@
 package board;
+
+import java.awt.Graphics;
+
 //Naomi and Brandon
 public class BoardCell {
-	private int row;
-	private int column;
+	protected int row;
+	protected int column;
 	
 	public BoardCell() {
 	}
@@ -35,6 +38,6 @@ public class BoardCell {
 	public int getColumn() {
 		return column;
 	}
-	//later add abstract method named draw
-	
+
+	public void draw(Graphics g, Board board) {}
 }

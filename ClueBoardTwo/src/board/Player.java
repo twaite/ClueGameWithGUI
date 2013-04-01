@@ -1,6 +1,9 @@
 package board;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Point;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 public class Player {
@@ -9,18 +12,19 @@ public class Player {
 	protected String color;
 	protected ArrayList<Card> cards = new ArrayList<Card>();
 	protected ArrayList<Card> cardsOfGame = new ArrayList<Card>();
-	protected Point Location = new Point();
+	protected Point Location;
 	protected char currentRoom;
 	protected char lastRoomVisited;
 	
 	
 	public Player () {
-		
+		 Location = new Point();
 	}
 	
 	public Player (String name, String color) {
 		this.name = name;
 		this.color = color;
+		Location = new Point();
 	}
 	
 	public Player (String name, String color, Point p) {
@@ -120,5 +124,25 @@ public class Player {
 	
 	public void setLocation(Point location) {
 		this.Location = location;
+	}
+	
+	public void draw(Graphics g, Board board) {
+		System.out.println("Color: " + color);
+		Color c = convertColor(color);
+		g.setColor(c);
+		g.fillOval(((int) Location.getX()) * 25, ((int) Location.getY()) * 25, 25, 25);
+		g.setColor(Color.BLACK);
+		g.drawOval(((int) Location.getX()) * 25, ((int) Location.getY()) * 25, 25, 25);
+	}
+	
+	public Color convertColor( String strColor ) {
+		Color color;
+		try {
+			Field field = Class.forName("java.awt.Color").getField(strColor.trim());
+			color = (Color) field.get(null);
+		} catch ( Exception e ) {
+			color = null; // Not defined
+		}
+		return color;
 	}
 }

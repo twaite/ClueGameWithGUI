@@ -39,3 +39,23 @@ Too few columns in board file
 Legend file row contains too many columns
 Legend File doesn't contain the correct number of rooms
 Config File contains invalid Room Initial
+Config File contains invalid Room Initial
+Too few columns in board file
+Legend file row contains too many columns
+Legend File doesn't contain the correct number of rooms
+Config File contains invalid Room Initial
+Config File contains invalid Room Initial
+Too few columns in board file
+Legend file row contains too many columns
+Legend File doesn't contain the correct number of rooms
+Config File contains invalid Room Initial
+Too few columns in board file
+Legend file row contains too many columns
+Config File contains invalid Room Initial
+Legend File doesn't contain the correct number of rooms
+Config File contains invalid Room Initial
+Too few columns in board file
+Legend file row contains too many columns
+Config File contains invalid Room Initial
+Legend File doesn't contain the correct number of rooms
+Config File contains invalid Room Initial

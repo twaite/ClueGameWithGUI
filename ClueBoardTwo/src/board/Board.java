@@ -1,4 +1,5 @@
 package board;
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -9,8 +10,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JPanel;
+
 //Naomi and Brandon
-public class Board {
+public class Board extends JPanel{
 	public static final int ROWS = 23;
 	public static final int COLS = 23;
 	public static final int ROOMS = 11;
@@ -25,6 +28,7 @@ public class Board {
 	private String legend;
 	private String board;
 	private boolean[] visited;
+	ArrayList<Player> players;
 	
 	public Board() {
 		cells = new ArrayList<BoardCell>();
@@ -160,6 +164,10 @@ public class Board {
 
 	public int getNumRooms() {
 		return numRooms;
+	}
+	
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
 	}
 	
 	//calcTargets with location
@@ -310,4 +318,13 @@ public class Board {
 		calcTargets(location,steps);
 	}
 	
+	public void paintComponent(Graphics g) {
+		for ( BoardCell cell : cells ) {
+			cell.draw(g, this);
+		}
+		
+		for ( Player p : players ) {
+			p.draw(g, this);
+		}
+	}
 }
