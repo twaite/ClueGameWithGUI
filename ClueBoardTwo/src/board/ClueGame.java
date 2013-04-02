@@ -31,16 +31,18 @@ public class ClueGame {
 		board = new Board("Clue Board.csv", "Legend.txt");
 		board.loadConfigFiles();
 		board.calcAdjacencies();
+		board.setPlayers(players);
 	}
 	
 	/************************************************************************************************************
- 	* Default constructor
+ 	* Parameterized constructor
  	************************************************************************************************************/
 	public ClueGame(String peopleFileName, String cardFileName) {
 		loadConfigFiles(peopleFileName, cardFileName);
 		board = new Board("Clue Board.csv", "Legend.txt");
 		board.loadConfigFiles();
 		board.calcAdjacencies();
+		board.setPlayers(players);
 	}
 	
 	/************************************************************************************************************
@@ -147,9 +149,7 @@ public class ClueGame {
 			line = input.nextLine();
 			parts = line.split(", ");
 			name = parts[0];
-			//System.out.println(name);
 			color = parts[1];
-			convertColor( color );
 			p = new Point( Integer.parseInt(parts[2]), Integer.parseInt(parts[3]) );
 			if ( playerCount == 0 ) {
 				humanPlayer = new HumanPlayer(name, color, p);
@@ -160,17 +160,6 @@ public class ClueGame {
 			playerCount++;
 		}
 
-	}
-	
-	public Color convertColor( String strColor ) {
-		Color color;
-		try {
-			Field field = Class.forName("java.awt.Color").getField(strColor.trim());
-			color = (Color) field.get(null);
-		} catch ( Exception e ) {
-			color = null; // Not defined
-		}
-		return color;
 	}
 	
 	/************************************************************************************************************

@@ -1,4 +1,8 @@
 package board;
+
+import java.awt.Color;
+import java.awt.Graphics;
+
 //Naomi and Brandon
 public class RoomCell extends BoardCell {
 	public enum DoorDirection { UP, DOWN, LEFT, RIGHT, NONE };
@@ -58,7 +62,23 @@ public class RoomCell extends BoardCell {
 		return doorDirection;
 	}
 	
-	
-	//Override draw when we add GUI
-
+	@Override 
+	public void draw (Graphics g, Board board) { 
+		g.setColor(Color.GRAY); 
+		g.fillRect( column * 25, row * 25, 25, 25);
+		g.setColor(Color.BLUE);
+		if (doorDirection == DoorDirection.LEFT) { 
+			g.fillRect(column * 25, row * 25, 5, 25);
+		} 
+		if (doorDirection == DoorDirection.UP) { 
+			g.fillRect(column *25, row *25,  25, 5); 
+		}
+		if (doorDirection == DoorDirection.RIGHT) { 
+			g.fillRect((column+1)*25 -5, row *25, 5, 25); 
+		}
+		if (doorDirection == DoorDirection.DOWN) { 
+			g.fillRect(column *25, (row+1) *25 - 5, 25, 5); 
+		}
+	}
 }
+

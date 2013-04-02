@@ -1,4 +1,5 @@
 package board;
+import java.awt.Graphics;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -9,8 +10,10 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JPanel;
+
 //Naomi and Brandon
-public class Board {
+public class Board extends JPanel{
 	public static final int ROWS = 23;
 	public static final int COLS = 23;
 	public static final int ROOMS = 11;
@@ -25,6 +28,7 @@ public class Board {
 	private String legend;
 	private String board;
 	private boolean[] visited;
+	ArrayList<Player> players;
 	
 	public Board() {
 		cells = new ArrayList<BoardCell>();
@@ -63,23 +67,27 @@ public class Board {
 	public void loadRoomConfig() throws BadConfigFormatException, FileNotFoundException {
 		FileReader legendr = new FileReader(legend);
 		Scanner input = new Scanner(legendr);
-		for(int i = 0; i < ROOMS; ++i) {
-			if(input.hasNextLine()) {
-				String line = input.nextLine();
-				String[] parts = line.split(",");
-				if(parts[0].length() == 0 || parts[1].length() == 0 || parts[0].length() > 1) {
-					throw new BadConfigFormatException("Bad configuration in Legend file");
 
-				}
-				else {
-					char initial = parts[0].charAt(0);
-					String room = parts[1];
-					room = room.substring(1, room.length());
-					rooms.put(initial, room);				}
+		int lineCount = 0;
+		while (input.hasNextLine()) {
+			String line = input.nextLine();
+			String[] parts = line.split(",");
+			if (parts.length > 2) {
+				throw new BadConfigFormatException("Legend file row contains too many columns");
+			}
+			if (parts.length == 1 ) {
+				throw new BadConfigFormatException( "Legend file row contains blank column" );
 			}
 			else {
-				throw new BadConfigFormatException("Too few rooms in Legend file");
-			}
+				char initial = parts[0].charAt(0);
+				String room = parts[1];
+				room = room.substring(1, room.length());
+				rooms.put(initial, room);	
+				}
+			lineCount++;
+		}
+		if (lineCount != ROOMS) {
+			throw new BadConfigFormatException( "Legend File doesn't contain the correct number of rooms" );
 		}
 	}
 	
@@ -112,7 +120,7 @@ public class Board {
 							cells.add(newCell);
 						}
 					} else {
-						throw new BadConfigFormatException("Room initial does not match any designated Rooms");
+						throw new BadConfigFormatException( "Config File contains invalid Room Initial" );
 					}
 				}
 				numRows++;
@@ -157,6 +165,10 @@ public class Board {
 
 	public int getNumRooms() {
 		return numRooms;
+	}
+	
+	public void setPlayers(ArrayList<Player> players) {
+		this.players = players;
 	}
 	
 	//calcTargets with location
@@ -307,4 +319,13 @@ public class Board {
 		calcTargets(location,steps);
 	}
 	
+	public void paintComponent(Graphics g) {
+		for ( BoardCell cell : cells ) {
+			cell.draw(g, this);
+		}
+		
+		for ( Player p : players ) {
+			p.draw(g, this);
+		}
+	}
 }

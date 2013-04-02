@@ -39,7 +39,7 @@ public class GameSetupTests {
 		Point location = new Point();
 		
 		//Check the human player
-		location = new Point( 0, 6 );
+		location = new Point( 6, 0 );
 		Assert.assertEquals( game.getHumanPlayer().getName(), "Orezy" ); 
 		Assert.assertEquals( game.getHumanPlayer().getColor(), "Green" ); 
 		Assert.assertEquals( game.getHumanPlayer().getLocation(), location );
@@ -53,7 +53,7 @@ public class GameSetupTests {
 		
 		//Check the last computer player in the file
 		player = game.getPlayerList().get(8);
-		location = new Point( 0, 11 );
+		location = new Point( 11, 0 );
 		Assert.assertEquals ( player.getName() , "Gator");
 		Assert.assertEquals ( player.getColor() , "White");
 		Assert.assertEquals ( player.getLocation() , location);
