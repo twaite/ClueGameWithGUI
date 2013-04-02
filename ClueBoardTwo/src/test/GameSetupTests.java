@@ -41,21 +41,14 @@ public class GameSetupTests {
 		//Check the human player
 		location = new Point( 6, 0 );
 		Assert.assertEquals( game.getHumanPlayer().getName(), "Orezy" ); 
-		Assert.assertEquals( game.getHumanPlayer().getColor(), "Green" ); 
+		Assert.assertEquals( game.getHumanPlayer().getColor(), "green" ); 
 		Assert.assertEquals( game.getHumanPlayer().getLocation(), location );
-	
-		//Check the first computer player in the file
-//		player = game.getPlayerList().get(1);
-//		location = new Point( 6, 0 );
-//		Assert.assertEquals ( player.getName() , "OkyG");
-//		Assert.assertEquals ( player.getColor() , "Blue");
-//		Assert.assertEquals ( player.getLocation() , location);
 		
 		//Check the last computer player in the file
 		player = game.getPlayerList().get(8);
 		location = new Point( 11, 0 );
 		Assert.assertEquals ( player.getName() , "Gator");
-		Assert.assertEquals ( player.getColor() , "White");
+		Assert.assertEquals ( player.getColor() , "white");
 		Assert.assertEquals ( player.getLocation() , location);
 	}
 	

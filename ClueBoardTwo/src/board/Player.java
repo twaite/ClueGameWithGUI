@@ -127,12 +127,11 @@ public class Player {
 	}
 	
 	public void draw(Graphics g, Board board) {
-		System.out.println("Color: " + color);
 		Color c = convertColor(color);
 		g.setColor(c);
-		g.fillOval(((int) Location.getX()) * 25, ((int) Location.getY()) * 25, 25, 25);
+		g.fillOval(((int) Location.getX()) * 25 + 1, ((int) Location.getY()) * 25 + 1, 25-1, 25-1);
 		g.setColor(Color.BLACK);
-		g.drawOval(((int) Location.getX()) * 25, ((int) Location.getY()) * 25, 25, 25);
+		g.drawOval(((int) Location.getX()) * 25 +1, ((int) Location.getY()) * 25+1, 25-1, 25-1);
 	}
 	
 	public Color convertColor( String strColor ) {

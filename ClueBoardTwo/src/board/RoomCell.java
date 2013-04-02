@@ -8,19 +8,7 @@ public class RoomCell extends BoardCell {
 	public enum DoorDirection { UP, DOWN, LEFT, RIGHT, NONE };
 	private DoorDirection doorDirection;
 	private char roomInitial;
-	
-	@Override
-	public boolean isRoom(){
-		return true;
-	}
-	
-	@Override
-	public boolean isDoorway() {
-		if(doorDirection == DoorDirection.NONE)
-			return false;
-		else
-			return true;
-	}
+	private boolean displayName;
 	
 	public RoomCell(int row, int column, char initial) {
 		super(row,column);
@@ -44,12 +32,29 @@ public class RoomCell extends BoardCell {
 			case 'R' :
 				this.doorDirection = DoorDirection.RIGHT;
 				break;
+			case 'N':
+				this.doorDirection = DoorDirection.NONE;
+				this.displayName = true;
+				break;
 			default: 
 				this.doorDirection = DoorDirection.NONE;
 				break;
 		}
 	}
 
+	@Override
+	public boolean isRoom(){
+		return true;
+	}
+	
+	@Override
+	public boolean isDoorway() {
+		if(doorDirection == DoorDirection.NONE)
+			return false;
+		else
+			return true;
+	}
+	
 	public char getInitial() {
 		return roomInitial;
 	}
@@ -79,6 +84,10 @@ public class RoomCell extends BoardCell {
 		if (doorDirection == DoorDirection.DOWN) { 
 			g.fillRect(column *25, (row+1) *25 - 5, 25, 5); 
 		}
+		if (displayName) {
+			g.drawString(board.getRooms().get(roomInitial), column*25, row*25);			
+		}
+
 	}
 }
 
