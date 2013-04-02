@@ -1,6 +1,7 @@
 package board;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -13,13 +14,17 @@ public class GUI extends JFrame {
 	private Board board;
 	private ClueGame clue;
 	private DetectiveNotes notes;
+	private GameControlGUI control;
 	
 	public GUI() {
 		clue = new ClueGame();
 		board = clue.getBoard();
-		setSize((board.getNumColumns()+1)*25, (board.getNumRows() + 3)*25);
+		control = new GameControlGUI();
+		setSize(580, 745);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Clue");
 		add(board, BorderLayout.CENTER);
+		add(control, BorderLayout.SOUTH);
 		setVisible(true);
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
