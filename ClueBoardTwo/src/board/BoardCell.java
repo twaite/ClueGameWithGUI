@@ -38,6 +38,10 @@ public class BoardCell {
 	public int getColumn() {
 		return column;
 	}
+	
+	public String toString() {
+		return "Board Cell - Row: " + row + " Column: " + column;
+	}
 
 	public void draw(Graphics g, Board board) {}
 }

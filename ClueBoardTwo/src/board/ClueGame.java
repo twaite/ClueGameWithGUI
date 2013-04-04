@@ -260,7 +260,7 @@ public class ClueGame {
 		Player currentPlayer = players.get(turnIndicator);
 		
 		if ( currentPlayer instanceof ComputerPlayer ) {
-			board.calcTargets((int) currentPlayer.getLocation().getX(), (int) currentPlayer.getLocation().getY(), roll);
+			board.calcTargets(board.calcIndex((int) currentPlayer.getLocation().getX(), (int) currentPlayer.getLocation().getY()), roll);
 			((ComputerPlayer) currentPlayer).makeMove(board.getTargets());
 			board.repaint();
 		}

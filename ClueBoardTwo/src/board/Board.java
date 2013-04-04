@@ -200,6 +200,7 @@ public class Board extends JPanel{
 	
 	//calcTargets with coordinates
 	public void calcTargets(int row, int column, int steps) {
+		targets = new HashSet<BoardCell>();
 		int location = calcIndex(row,column);
 		startTargets(location,steps);
 	}
@@ -320,6 +321,7 @@ public class Board extends JPanel{
 	}
 	
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		for ( BoardCell cell : cells ) {
 			cell.draw(g, this);
 		}
