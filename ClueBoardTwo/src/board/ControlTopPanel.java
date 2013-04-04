@@ -14,8 +14,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class ControlTopPanel extends JPanel {
+	JTextField currPlayerText;
 	
-	public ControlTopPanel(ClueGame game) {
+	public ControlTopPanel(ClueGame game, ControlBottomPanel bottom) {
 		setLayout(new GridLayout(0,3));
 		JPanel questionPanel = new JPanel();
 		questionPanel.setLayout(new GridLayout(3, 0));
@@ -25,9 +26,10 @@ public class ControlTopPanel extends JPanel {
 		centeredLabel.add(label);
 		JPanel centeredText = new JPanel();
 		centeredText.setLayout(new GridBagLayout());
-		JTextField textField = new JTextField(15);
-		textField.setFont(new Font("SansSerif", Font.BOLD, 12));
-		centeredText.add(textField);
+		currPlayerText = new JTextField(15);
+		currPlayerText.setFont(new Font("SansSerif", Font.BOLD, 12));
+		currPlayerText.setText(game.getPlayerList().get(game.getTurnIndicator()).getName());
+		centeredText.add(currPlayerText);
 		questionPanel.add(centeredLabel);
 		questionPanel.add(centeredText);
 		add(questionPanel);
@@ -38,23 +40,33 @@ public class ControlTopPanel extends JPanel {
 		//ButtonListener class
 		class ButtonListener implements ActionListener {
 			ClueGame game;
+			ControlTopPanel panelTop;
+			ControlBottomPanel panelBot;
 			
-			public ButtonListener(ClueGame game) {
+			public ButtonListener(ClueGame game, ControlTopPanel panelTop, ControlBottomPanel panelBot) {
 				super();
 				this.game = game;
+				this.panelTop = panelTop;
+				this.panelBot = panelBot;
 			}
 			
 			public void actionPerformed(ActionEvent e) {
 				game.nextPlayer();
+				panelTop.setCurrentPlayer(game.getPlayerList().get(game.getTurnIndicator()).getName());
+				panelBot.setRoll(game.getRoll());
 			}
 		}
 		
-		nextPlayer.addActionListener(new ButtonListener(game));
+		nextPlayer.addActionListener(new ButtonListener(game, this, bottom));
 		add(nextPlayer);
 		
 		//Add the accusation button.
 		JButton accusationButton = new JButton("Make an accusation");
 		add(accusationButton);
+	}
+	
+	public void setCurrentPlayer(String player) {
+		currPlayerText.setText(player);
 	}
 
 }

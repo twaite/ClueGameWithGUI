@@ -65,7 +65,7 @@ public class DetectiveNotes extends JDialog {
 		
 		//Room Guess panel
 		JPanel roomGuess = new JPanel();
-		roomGuess.setBorder(new TitledBorder (new EtchedBorder(), "Person Guess"));
+		roomGuess.setBorder(new TitledBorder (new EtchedBorder(), "Room Guess"));
 		roomGuess.setLayout(new GridLayout(0, 2));
 		JComboBox roomBox = new JComboBox();
 		roomBox.addItem("Unsure");
@@ -96,7 +96,7 @@ public class DetectiveNotes extends JDialog {
 				
 		//Weapon Guess panel
 		JPanel weaponGuess = new JPanel();
-		weaponGuess.setBorder(new TitledBorder (new EtchedBorder(), "Person Guess"));
+		weaponGuess.setBorder(new TitledBorder (new EtchedBorder(), "Weapon Guess"));
 		weaponGuess.setLayout(new GridLayout(0, 2));
 		JComboBox weaponBox = new JComboBox();
 		for ( Card card : game.getCardList() ) {

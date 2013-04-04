@@ -14,15 +14,16 @@ public class GameControlGUI extends JPanel{
 		setSize(800, 200);
 		setLayout(new GridLayout(2, 0));
 		
-		//Set up north panel.
-		ControlTopPanel panelNorth = new ControlTopPanel(clue);
-		add(panelNorth, BorderLayout.NORTH);
-		
 		//Set up south panel.
 		ControlBottomPanel panelSouth = new ControlBottomPanel();
+		
+		//Set up north panel.
+		ControlTopPanel panelNorth = new ControlTopPanel(clue, panelSouth);
+		
+		add(panelNorth, BorderLayout.NORTH);
 		add(panelSouth, BorderLayout.SOUTH);
 		setVisible(true);
-
+	
 	}
 	
 }

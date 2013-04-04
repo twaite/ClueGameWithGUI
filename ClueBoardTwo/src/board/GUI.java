@@ -25,7 +25,7 @@ public class GUI extends JFrame {
 		control = new GameControlGUI(clue);
 		clue.deal();
 		cards = new PlayerCardPanel(clue.getHumanPlayer().getCardList());
-		setSize(715, 745);
+		setSize(705, 745);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Clue");
 		add(cards, BorderLayout.EAST);

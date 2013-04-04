@@ -11,6 +11,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
 public class ControlBottomPanel extends JPanel {
+	private JTextField rollReturn;
 
 	public ControlBottomPanel()
 	{
@@ -18,7 +19,7 @@ public class ControlBottomPanel extends JPanel {
 		
 		JPanel die = new JPanel();
 		JLabel roll = new JLabel("Roll");
-		JTextField rollReturn = new JTextField(10);
+		rollReturn = new JTextField(10);
 		rollReturn.setEditable(false);
 		die.add(roll);
 		die.add(rollReturn);
@@ -41,10 +42,10 @@ public class ControlBottomPanel extends JPanel {
 		JTextField resultField = new JTextField(10);
 		resultField.setEditable(false);
 		result.add(resultField);
-		add(result);
-
-		
-		
+		add(result);	
 	}
-
+	
+	public void setRoll(int roll) {
+		rollReturn.setText(Integer.toString(roll));
+	}
 }

@@ -22,6 +22,7 @@ public class ClueGame {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Board board;
 	private int turnIndicator;
+	private int roll;
 	
 	/************************************************************************************************************
  	* Default constructor
@@ -83,10 +84,7 @@ public class ClueGame {
 			c.remove(rand);
 			i = (i + 1) % 9;
 		}
-		
-		for ( Player p : players ) {
-			System.out.println(p.getCardList().size());
-		}
+	
 	}
 	
 	/************************************************************************************************************
@@ -258,9 +256,22 @@ public class ClueGame {
 	}
 	
 	public void nextPlayer() {
-		System.out.println("NEXT PLAYER!");
+		roll();
+		Player currentPlayer = players.get(turnIndicator);
+		
+		if ( currentPlayer instanceof ComputerPlayer ) {
+			board.calcTargets((int) currentPlayer.getLocation().getX(), (int) currentPlayer.getLocation().getY(), roll);
+			((ComputerPlayer) currentPlayer).makeMove(board.getTargets());
+			board.repaint();
+		}
+		
+		turnIndicator = (turnIndicator + 1) % players.size();
 	}
 	
+	public void roll() {
+		Random rand = new Random();
+		roll = rand.nextInt(6) + 1;
+	}
 	
 	public Player getHumanPlayer() {
 		return humanPlayer;
@@ -285,5 +296,13 @@ public class ClueGame {
 	
 	public Board getBoard() {
 		return board;
+	}
+	
+	public int getTurnIndicator() {
+		return turnIndicator;
+	}
+	
+	public int getRoll() {
+		return roll;
 	}
 }
