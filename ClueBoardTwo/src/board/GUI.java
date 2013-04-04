@@ -1,6 +1,7 @@
 package board;
 
 import java.awt.BorderLayout;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,30 +10,40 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class GUI extends JFrame {
 	private Board board;
 	private ClueGame clue;
 	private DetectiveNotes notes;
 	private GameControlGUI control;
+	private PlayerCardPanel cards;
 	
 	public GUI() {
 		clue = new ClueGame();
 		board = clue.getBoard();
-		control = new GameControlGUI();
-		setSize(580, 745);
+		control = new GameControlGUI(clue);
+		clue.deal();
+		cards = new PlayerCardPanel(clue.getHumanPlayer().getCardList());
+		setSize(715, 745);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Clue");
-		add(board, BorderLayout.CENTER);
+		add(cards, BorderLayout.EAST);
 		add(control, BorderLayout.SOUTH);
+		add(board, BorderLayout.CENTER);
 		setVisible(true);
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
+		
 	}
+	
 	public static void main(String[] args) {
+		String dialogMessage = "You are Orezy, press Next Player to begin play";
+		String dialogTitle = "Welcome to Clue";
 		GUI test = new GUI();
 		test.setVisible(true);
+		JOptionPane.showMessageDialog(test, dialogMessage, dialogTitle, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	private JMenu createFileMenu() {

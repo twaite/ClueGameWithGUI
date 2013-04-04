@@ -9,13 +9,13 @@ import javax.swing.JPanel;
 
 public class GameControlGUI extends JPanel{
 
-	public GameControlGUI() {
+	public GameControlGUI(ClueGame clue) {
 		//Set Size and Layout
 		setSize(800, 200);
 		setLayout(new GridLayout(2, 0));
 		
 		//Set up north panel.
-		ControlTopPanel panelNorth = new ControlTopPanel();
+		ControlTopPanel panelNorth = new ControlTopPanel(clue);
 		add(panelNorth, BorderLayout.NORTH);
 		
 		//Set up south panel.
@@ -25,8 +25,4 @@ public class GameControlGUI extends JPanel{
 
 	}
 	
-	public static void main(String[] args) {
-		GameControlGUI gameControl = new GameControlGUI();
-	}
-
 }

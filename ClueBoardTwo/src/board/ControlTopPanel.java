@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -13,7 +15,7 @@ import javax.swing.JTextField;
 
 public class ControlTopPanel extends JPanel {
 	
-	public ControlTopPanel() {
+	public ControlTopPanel(ClueGame game) {
 		setLayout(new GridLayout(0,3));
 		JPanel questionPanel = new JPanel();
 		questionPanel.setLayout(new GridLayout(3, 0));
@@ -32,6 +34,22 @@ public class ControlTopPanel extends JPanel {
 		
 		//Add the next player button.
 		JButton nextPlayer = new JButton("Next Player");
+		
+		//ButtonListener class
+		class ButtonListener implements ActionListener {
+			ClueGame game;
+			
+			public ButtonListener(ClueGame game) {
+				super();
+				this.game = game;
+			}
+			
+			public void actionPerformed(ActionEvent e) {
+				game.nextPlayer();
+			}
+		}
+		
+		nextPlayer.addActionListener(new ButtonListener(game));
 		add(nextPlayer);
 		
 		//Add the accusation button.

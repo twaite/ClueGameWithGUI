@@ -24,7 +24,14 @@ public class ComputerPlayer extends Player {
 		cardsSeen = new ArrayList<Card>();
 		this.name = name;
 		this.color = color;
-		this.Location = p;
+		this.location = p;
+	}
+	
+	public void makeMove(HashSet<BoardCell> targets) {
+		BoardCell target = pickLocation(targets);
+		int row = target.getRow();
+		int col = target.getColumn();
+		location = new Point(row, col);
 	}
 
 	public BoardCell pickLocation( HashSet<BoardCell> targets ) {
