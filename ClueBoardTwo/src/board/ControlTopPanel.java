@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -51,9 +52,15 @@ public class ControlTopPanel extends JPanel {
 			}
 			
 			public void actionPerformed(ActionEvent e) {
-				game.nextPlayer();
-				panelTop.setCurrentPlayer(game.getPlayerList().get(game.getTurnIndicator()).getName());
-				panelBot.setRoll(game.getRoll());
+				if ( !game.getHumanMustFinish() ) {
+					game.nextPlayer();
+					panelTop.setCurrentPlayer(game.getPlayerList().get(game.getTurnIndicator()).getName());
+					panelBot.setRoll(game.getRoll());
+				} else {
+					String dialogMessage = "You must finish your turn";
+					String dialogTitle = "Error";
+					JOptionPane.showMessageDialog(panelTop, dialogMessage, dialogTitle, JOptionPane.INFORMATION_MESSAGE);
+				}
 			}
 		}
 		

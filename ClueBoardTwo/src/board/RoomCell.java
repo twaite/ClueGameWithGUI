@@ -68,9 +68,14 @@ public class RoomCell extends BoardCell {
 	}
 	
 	@Override 
-	public void draw (Graphics g, Board board) { 
-		g.setColor(Color.GRAY); 
+	public void draw (Graphics g, Board board) {
+		if ( !isHumanTarget ) {
+			g.setColor(Color.GRAY);
+		} else {
+			g.setColor(Color.CYAN);
+		}
 		g.fillRect( column * 25, row * 25, 25, 25);
+		
 		g.setColor(Color.BLUE);
 		if (doorDirection == DoorDirection.LEFT) { 
 			g.fillRect(column * 25, row * 25, 5, 25);

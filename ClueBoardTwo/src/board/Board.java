@@ -1,5 +1,8 @@
 package board;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -27,6 +30,7 @@ public class Board extends JPanel{
 	//Defaults to Dr. Rader's config files
 	private String legend;
 	private String board;
+	private boolean humanMustFinish;
 	private boolean[] visited;
 	ArrayList<Player> players;
 	
@@ -38,6 +42,7 @@ public class Board extends JPanel{
 		legend = "ClueLegend.txt";
 		board = "ClueLayout.csv";
 		visited = new boolean[ROWS * COLS];
+		addMouseListener(new BoardListener());
 	}
 	
 	public Board(String board, String legend ) {
@@ -48,7 +53,8 @@ public class Board extends JPanel{
 		this.board = board;
 		this.legend = legend;
 		visited = new boolean[ROWS * COLS];
-		}
+		addMouseListener(new BoardListener());
+	}
 	
 	public void loadConfigFiles() {
 		try {
@@ -319,6 +325,14 @@ public class Board extends JPanel{
 		calcTargets(location,steps);
 	}
 	
+	public boolean getHumanMustFinish() {
+		return humanMustFinish;
+	}
+	
+	public void setHumanMustFinish(boolean set) {
+		humanMustFinish = set;
+	}
+		
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		for ( BoardCell cell : cells ) {
@@ -328,5 +342,23 @@ public class Board extends JPanel{
 		for ( Player p : players ) {
 			p.draw(g, this);
 		}
+	}
+	
+	private class BoardListener implements MouseListener {
+		public void mouseClicked (MouseEvent event) {
+			Point clicked = event.getPoint();
+			for ( BoardCell cell : cells ) {
+				if (cell.getIsHumanTarget() && cell.containsClick(clicked)) {
+					players.get(0).setLocation(cell.getLocation());
+					repaint();
+					humanMustFinish = false;
+				}
+			}
+		}
+		//Empty definitions for unused even methods.
+		public void mousePressed (MouseEvent event) {}
+		public void mouseReleased (MouseEvent event) {}
+		public void mouseEntered (MouseEvent event) {}
+		public void mouseExited (MouseEvent event) {}
 	}
 }
