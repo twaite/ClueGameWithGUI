@@ -313,8 +313,7 @@ public class Board extends JPanel{
 		//empty targets and set visited to false just in case
 		targets = new HashSet<BoardCell>();
 		
-		
-		Arrays.fill(visited, false);
+		visited = new boolean[numRooms];
 		//set start location to true
 		visited[location] = true;
 		calcTargets(location,steps);

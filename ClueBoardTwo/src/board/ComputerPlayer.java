@@ -32,8 +32,8 @@ public class ComputerPlayer extends Player {
 		BoardCell target = pickLocation(targets);
 		int row = target.getRow();
 		int col = target.getColumn();
-		location = new Point(row, col);
-		System.out.println("Row: " + row + " Column: " + col);
+		location = new Point(col, row);
+		//System.out.println("Row: " + row + " Column: " + col);
 	}
 	
 	/*public BoardCell pickLocation(Set<BoardCell> targets) {
@@ -59,9 +59,9 @@ public class ComputerPlayer extends Player {
 	}*/
 
 	public BoardCell pickLocation( HashSet<BoardCell> targets ) {
-		for (BoardCell cell : targets) {
+		/*for (BoardCell cell : targets) {
 		    System.out.println(cell);
-		}
+		}*/
 		int index = (int) ( Math.random() * targets.size() );
 		ArrayList<RoomCell> doorsOfTargets = new ArrayList<RoomCell>();
 		Object[] targetsArray = targets.toArray();

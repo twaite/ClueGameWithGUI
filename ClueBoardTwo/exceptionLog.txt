@@ -28,3 +28,7 @@ Config File contains invalid Room Initial
 Legend file row contains blank column
 Legend File doesn't contain the correct number of rooms
 Config File contains invalid Room Initial
+Legend File doesn't contain the correct number of rooms
+Config File contains invalid Room Initial
+Legend File doesn't contain the correct number of rooms
+Config File contains invalid Room Initial
