@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 //Naomi and Brandon
@@ -33,6 +34,7 @@ public class Board extends JPanel{
 	private boolean humanMustFinish;
 	private boolean[] visited;
 	ArrayList<Player> players;
+	private ClueGame game;
 	
 	public Board() {
 		cells = new ArrayList<BoardCell>();
@@ -42,7 +44,7 @@ public class Board extends JPanel{
 		legend = "ClueLegend.txt";
 		board = "ClueLayout.csv";
 		visited = new boolean[ROWS * COLS];
-		addMouseListener(new BoardListener());
+		addMouseListener(new BoardListener(this));
 	}
 	
 	public Board(String board, String legend ) {
@@ -53,7 +55,19 @@ public class Board extends JPanel{
 		this.board = board;
 		this.legend = legend;
 		visited = new boolean[ROWS * COLS];
-		addMouseListener(new BoardListener());
+		addMouseListener(new BoardListener(this));
+	}
+	
+	public Board(String board, String legend, ClueGame game ) {
+		cells = new ArrayList<BoardCell>();
+		rooms = new HashMap<Character, String>();
+		targets = new HashSet<BoardCell>();
+		adjMtx = new HashMap<Integer, LinkedList<Integer>>();
+		this.board = board;
+		this.legend = legend;
+		this.game = game;
+		visited = new boolean[ROWS * COLS];
+		addMouseListener(new BoardListener(this));
 	}
 	
 	public void loadConfigFiles() {
@@ -345,13 +359,29 @@ public class Board extends JPanel{
 	}
 	
 	private class BoardListener implements MouseListener {
+		private Board board;
+		public BoardListener(Board board) { this.board = board; }
 		public void mouseClicked (MouseEvent event) {
 			Point clicked = event.getPoint();
+			int index;
 			for ( BoardCell cell : cells ) {
-				if (cell.getIsHumanTarget() && cell.containsClick(clicked)) {
+				if (!cell.getIsHumanTarget() && cell.containsClick(clicked)) {
+					String dialogMessage = "You must select a valid target.";
+					String dialogTitle = "Error";
+					JOptionPane.showMessageDialog(board, dialogMessage, dialogTitle, JOptionPane.INFORMATION_MESSAGE);
+				} else if (cell.getIsHumanTarget() && cell.containsClick(clicked)) {
 					players.get(0).setLocation(cell.getLocation());
+					for ( BoardCell b : targets ) {
+						index = calcIndex(b.getRow(), b.getColumn());
+						cells.get(index).setIsHumanTarget(false);
+					}
+					targets = new HashSet<BoardCell>();
 					repaint();
 					humanMustFinish = false;
+					int newIndicator;
+					newIndicator = (game.getTurnIndicator() + 1) % players.size();
+					game.setTurnIndicator(newIndicator);
+				
 				}
 			}
 		}

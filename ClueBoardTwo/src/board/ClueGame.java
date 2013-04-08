@@ -30,7 +30,7 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame() {
 		loadConfigFiles("people.txt", "cards.txt");
-		board = new Board("Clue Board.csv", "Legend.txt");
+		board = new Board("Clue Board.csv", "Legend.txt", this);
 		board.loadConfigFiles();
 		board.calcAdjacencies();
 		board.setPlayers(players);
@@ -41,7 +41,7 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame(String peopleFileName, String cardFileName) {
 		loadConfigFiles(peopleFileName, cardFileName);
-		board = new Board("Clue Board.csv", "Legend.txt");
+		board = new Board("Clue Board.csv", "Legend.txt", this);
 		board.loadConfigFiles();
 		board.calcAdjacencies();
 		board.setPlayers(players);
@@ -279,10 +279,8 @@ public class ClueGame {
 				index = board.calcIndex(cell.getRow(), cell.getColumn());
 				cells.get(index).setIsHumanTarget(true);
 			}
-			
 			board.repaint();
 		}
-		
 		if ( !board.getHumanMustFinish() ) {
 			turnIndicator = (turnIndicator + 1) % players.size();
 		}
@@ -328,5 +326,9 @@ public class ClueGame {
 	
 	public boolean getHumanMustFinish() {
 		return humanMustFinish;
+	}
+	
+	public void setTurnIndicator(int newIndicator) {
+		turnIndicator = newIndicator;
 	}
 }

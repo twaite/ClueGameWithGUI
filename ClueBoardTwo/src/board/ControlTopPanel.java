@@ -52,7 +52,7 @@ public class ControlTopPanel extends JPanel {
 			}
 			
 			public void actionPerformed(ActionEvent e) {
-				if ( !game.getHumanMustFinish() ) {
+				if ( !game.getBoard().getHumanMustFinish() ) {
 					game.nextPlayer();
 					panelTop.setCurrentPlayer(game.getPlayerList().get(game.getTurnIndicator()).getName());
 					panelBot.setRoll(game.getRoll());
