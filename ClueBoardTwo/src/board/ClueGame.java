@@ -23,13 +23,14 @@ public class ClueGame {
 	private Board board;
 	private int turnIndicator;
 	private int roll;
+	private boolean humanMustFinish;
 	
 	/************************************************************************************************************
  	* Default constructor
  	************************************************************************************************************/
 	public ClueGame() {
 		loadConfigFiles("people.txt", "cards.txt");
-		board = new Board("Clue Board.csv", "Legend.txt");
+		board = new Board("Clue Board.csv", "Legend.txt", this);
 		board.loadConfigFiles();
 		board.calcAdjacencies();
 		board.setPlayers(players);
@@ -40,7 +41,7 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame(String peopleFileName, String cardFileName) {
 		loadConfigFiles(peopleFileName, cardFileName);
-		board = new Board("Clue Board.csv", "Legend.txt");
+		board = new Board("Clue Board.csv", "Legend.txt", this);
 		board.loadConfigFiles();
 		board.calcAdjacencies();
 		board.setPlayers(players);
@@ -258,14 +259,31 @@ public class ClueGame {
 	public void nextPlayer() {
 		roll();
 		Player currentPlayer = players.get(turnIndicator);
-		
+		int row = (int) currentPlayer.getLocation().getY();
+		int col = (int) currentPlayer.getLocation().getX();
+		int location = board.calcIndex(row, col);
+		int index;
+		ArrayList<BoardCell> cells = board.getCells();
+				
 		if ( currentPlayer instanceof ComputerPlayer ) {
-			board.calcTargets((int) currentPlayer.getLocation().getX(), (int) currentPlayer.getLocation().getY(), roll);
+			
+			board.startTargets(location, roll);;
 			((ComputerPlayer) currentPlayer).makeMove(board.getTargets());
 			board.repaint();
+			
+		} else if ( currentPlayer instanceof HumanPlayer) {
+			board.setHumanMustFinish(true);
+			board.startTargets(location, roll);
+			
+			for ( BoardCell cell : board.getTargets() ) {
+				index = board.calcIndex(cell.getRow(), cell.getColumn());
+				cells.get(index).setIsHumanTarget(true);
+			}
+			board.repaint();
 		}
-		
-		turnIndicator = (turnIndicator + 1) % players.size();
+		if ( !board.getHumanMustFinish() ) {
+			turnIndicator = (turnIndicator + 1) % players.size();
+		}
 	}
 	
 	public void roll() {
@@ -304,5 +322,13 @@ public class ClueGame {
 	
 	public int getRoll() {
 		return roll;
+	}
+	
+	public boolean getHumanMustFinish() {
+		return humanMustFinish;
+	}
+	
+	public void setTurnIndicator(int newIndicator) {
+		turnIndicator = newIndicator;
 	}
 }

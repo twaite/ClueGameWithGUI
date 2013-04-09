@@ -1,5 +1,8 @@
 package board;
 import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
@@ -10,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 //Naomi and Brandon
@@ -27,8 +31,10 @@ public class Board extends JPanel{
 	//Defaults to Dr. Rader's config files
 	private String legend;
 	private String board;
+	private boolean humanMustFinish;
 	private boolean[] visited;
 	ArrayList<Player> players;
+	private ClueGame game;
 	
 	public Board() {
 		cells = new ArrayList<BoardCell>();
@@ -38,6 +44,7 @@ public class Board extends JPanel{
 		legend = "ClueLegend.txt";
 		board = "ClueLayout.csv";
 		visited = new boolean[ROWS * COLS];
+		addMouseListener(new BoardListener(this));
 	}
 	
 	public Board(String board, String legend ) {
@@ -48,7 +55,20 @@ public class Board extends JPanel{
 		this.board = board;
 		this.legend = legend;
 		visited = new boolean[ROWS * COLS];
-		}
+		addMouseListener(new BoardListener(this));
+	}
+	
+	public Board(String board, String legend, ClueGame game ) {
+		cells = new ArrayList<BoardCell>();
+		rooms = new HashMap<Character, String>();
+		targets = new HashSet<BoardCell>();
+		adjMtx = new HashMap<Integer, LinkedList<Integer>>();
+		this.board = board;
+		this.legend = legend;
+		this.game = game;
+		visited = new boolean[ROWS * COLS];
+		addMouseListener(new BoardListener(this));
+	}
 	
 	public void loadConfigFiles() {
 		try {
@@ -200,6 +220,7 @@ public class Board extends JPanel{
 	
 	//calcTargets with coordinates
 	public void calcTargets(int row, int column, int steps) {
+		targets = new HashSet<BoardCell>();
 		int location = calcIndex(row,column);
 		startTargets(location,steps);
 	}
@@ -312,14 +333,22 @@ public class Board extends JPanel{
 		//empty targets and set visited to false just in case
 		targets = new HashSet<BoardCell>();
 		
-		
-		Arrays.fill(visited, false);
+		visited = new boolean[numRooms];
 		//set start location to true
 		visited[location] = true;
 		calcTargets(location,steps);
 	}
 	
+	public boolean getHumanMustFinish() {
+		return humanMustFinish;
+	}
+	
+	public void setHumanMustFinish(boolean set) {
+		humanMustFinish = set;
+	}
+		
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 		for ( BoardCell cell : cells ) {
 			cell.draw(g, this);
 		}
@@ -327,5 +356,39 @@ public class Board extends JPanel{
 		for ( Player p : players ) {
 			p.draw(g, this);
 		}
+	}
+	
+	private class BoardListener implements MouseListener {
+		private Board board;
+		public BoardListener(Board board) { this.board = board; }
+		public void mouseClicked (MouseEvent event) {
+			Point clicked = event.getPoint();
+			int index;
+			for ( BoardCell cell : cells ) {
+				if (!cell.getIsHumanTarget() && cell.containsClick(clicked)) {
+					String dialogMessage = "You must select a valid target.";
+					String dialogTitle = "Error";
+					JOptionPane.showMessageDialog(board, dialogMessage, dialogTitle, JOptionPane.INFORMATION_MESSAGE);
+				} else if (cell.getIsHumanTarget() && cell.containsClick(clicked)) {
+					players.get(0).setLocation(cell.getLocation());
+					for ( BoardCell b : targets ) {
+						index = calcIndex(b.getRow(), b.getColumn());
+						cells.get(index).setIsHumanTarget(false);
+					}
+					targets = new HashSet<BoardCell>();
+					repaint();
+					humanMustFinish = false;
+					int newIndicator;
+					newIndicator = (game.getTurnIndicator() + 1) % players.size();
+					game.setTurnIndicator(newIndicator);
+				
+				}
+			}
+		}
+		//Empty definitions for unused even methods.
+		public void mousePressed (MouseEvent event) {}
+		public void mouseReleased (MouseEvent event) {}
+		public void mouseEntered (MouseEvent event) {}
+		public void mouseExited (MouseEvent event) {}
 	}
 }

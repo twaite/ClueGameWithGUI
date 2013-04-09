@@ -4,6 +4,7 @@ package board;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 public class ComputerPlayer extends Player {
@@ -31,10 +32,36 @@ public class ComputerPlayer extends Player {
 		BoardCell target = pickLocation(targets);
 		int row = target.getRow();
 		int col = target.getColumn();
-		location = new Point(row, col);
+		location = new Point(col, row);
+		//System.out.println("Row: " + row + " Column: " + col);
 	}
+	
+	/*public BoardCell pickLocation(Set<BoardCell> targets) {
+		Random rand = new Random();
+		int r = 0;
+		r = rand.nextInt(targets.size());
+		
+		for ( BoardCell bc : targets ) {
+			if ( bc.isRoom() ) {
+				RoomCell cell = (RoomCell) bc;
+				if ( lastRoomVisited == cell.getInitial() )
+					return bc;
+			}
+		}
+		
+		int i = 0;
+		for ( BoardCell bc : targets ) {
+			if ( i == r ) return bc;
+			++i;
+		}
+		
+		return null;
+	}*/
 
 	public BoardCell pickLocation( HashSet<BoardCell> targets ) {
+		/*for (BoardCell cell : targets) {
+		    System.out.println(cell);
+		}*/
 		int index = (int) ( Math.random() * targets.size() );
 		ArrayList<RoomCell> doorsOfTargets = new ArrayList<RoomCell>();
 		Object[] targetsArray = targets.toArray();
