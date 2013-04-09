@@ -22,6 +22,7 @@ public class ClueGame {
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Board board;
 	private int turnIndicator;
+	private int roll;
 	
 	/************************************************************************************************************
  	* Default constructor
@@ -50,69 +51,40 @@ public class ClueGame {
  	* 	of two players is one.
  	************************************************************************************************************/
 	public void deal() {
-		
-		int numCards = cards.size() - 3;
-		int rand;
-		ArrayList<Card> cardArray = new ArrayList<Card>(cards);
-		boolean foundPlayer = false;
-		boolean foundWeapon = false;
-		boolean foundRoom = false;
-		
-		String[] solutionFields = new String[3];
-		Card randCard = new Card();
-		
-		while (!foundPlayer || !foundWeapon || !foundRoom) {
-			if (!foundPlayer) {
-				rand = (int) ( Math.random() * cardArray.size() );
-				randCard = cardArray.get(rand);
-				if (randCard.getCardType() == Card.CardType.PERSON) {
-					foundPlayer = true;
-					solutionFields[0] = randCard.getName();
-					cardArray.remove(rand);
-				}
+		Card card;
+		String person = "", weapon = "", room = "";
+		Random r = new Random();
+		ArrayList<Card> c = new ArrayList<Card>(cards);
+		int rand = 0;
+		while ( true ) {
+			rand = r.nextInt(c.size());
+			card = c.get(rand);
+			if ( card.getCardType() == Card.CardType.PERSON && person == "") {
+				person = card.getName();
+				c.remove(rand);
 			}
-			
-			if (!foundWeapon) {
-				rand = (int) ( Math.random() * cardArray.size() );
-				randCard = cardArray.get(rand);
-				if (randCard.getCardType() == Card.CardType.WEAPON) {
-					foundWeapon = true;
-					solutionFields[1] = randCard.getName();
-					cardArray.remove(rand);
-				}
+			else if ( card.getCardType() == Card.CardType.ROOM && room == "") {
+				room = card.getName();
+				c.remove(rand);
 			}
-			
-			if (!foundRoom) {
-				rand = (int) ( Math.random() * cardArray.size() );
-				randCard = cardArray.get(rand);
-				if (randCard.getCardType() == Card.CardType.ROOM) {
-					foundRoom = true;
-					solutionFields[2] = randCard.getName();
-					cardArray.remove(rand);
-				}
+			else if ( card.getCardType() == Card.CardType.WEAPON && weapon == "") {
+				weapon = card.getName();
+				c.remove(rand);
 			}
+			if ( person != "" && room != "" && weapon != "" )
+				break;			
 		}
 		
-		solution = new Solution(solutionFields[0],solutionFields[1],solutionFields[2]);
-		
-		int numPlayers = players.size() - 1;
+		solution = new Solution(person, room, weapon);
+			
+		int i = 0;
+		while( c.size() > 0) {
+			rand = r.nextInt(c.size());
+			players.get(i).getCardList().add(c.get(rand));
+			c.remove(rand);
+			i = (i + 1) % 9;
+		}
 	
-														
-		while ( numCards != 0 ) {
-			if (numPlayers == -1) {
-				numPlayers = players.size() - 1;
-			}
-			//Generate rand number to access index
-			rand = (int) ( Math.random() * cardArray.size() );
-			
-			players.get(numPlayers).getCardList().add(cardArray.get(rand));
-			
-			cardsDealt.add(cardArray.get(rand));
-			cardArray.remove(rand);
-			
-			numPlayers--;
-			numCards--;
-		}
 	}
 	
 	/************************************************************************************************************
@@ -283,6 +255,23 @@ public class ClueGame {
 		}
 	}
 	
+	public void nextPlayer() {
+		roll();
+		Player currentPlayer = players.get(turnIndicator);
+		
+		if ( currentPlayer instanceof ComputerPlayer ) {
+			board.calcTargets((int) currentPlayer.getLocation().getX(), (int) currentPlayer.getLocation().getY(), roll);
+			((ComputerPlayer) currentPlayer).makeMove(board.getTargets());
+			board.repaint();
+		}
+		
+		turnIndicator = (turnIndicator + 1) % players.size();
+	}
+	
+	public void roll() {
+		Random rand = new Random();
+		roll = rand.nextInt(6) + 1;
+	}
 	
 	public Player getHumanPlayer() {
 		return humanPlayer;
@@ -307,5 +296,13 @@ public class ClueGame {
 	
 	public Board getBoard() {
 		return board;
+	}
+	
+	public int getTurnIndicator() {
+		return turnIndicator;
+	}
+	
+	public int getRoll() {
+		return roll;
 	}
 }

@@ -12,25 +12,25 @@ public class Player {
 	protected String color;
 	protected ArrayList<Card> cards = new ArrayList<Card>();
 	protected ArrayList<Card> cardsOfGame = new ArrayList<Card>();
-	protected Point Location;
+	protected Point location;
 	protected char currentRoom;
 	protected char lastRoomVisited;
 	
 	
 	public Player () {
-		 Location = new Point();
+		 location = new Point();
 	}
 	
 	public Player (String name, String color) {
 		this.name = name;
 		this.color = color;
-		Location = new Point();
+		location = new Point();
 	}
 	
 	public Player (String name, String color, Point p) {
 		this.name = name;
 		this.color = color;
-		this.Location = p;
+		this.location = p;
 	}
 	
 	/************************************************************************************************************
@@ -71,7 +71,7 @@ public class Player {
 	}
 	
 	public Point getLocation() {
-		return Location;
+		return location;
 	}
 	
 	public ArrayList<Card> getCardList() {
@@ -123,15 +123,15 @@ public class Player {
 	}
 	
 	public void setLocation(Point location) {
-		this.Location = location;
+		this.location = location;
 	}
 	
 	public void draw(Graphics g, Board board) {
 		Color c = convertColor(color);
 		g.setColor(c);
-		g.fillOval(((int) Location.getX()) * 25 + 1, ((int) Location.getY()) * 25 + 1, 25-1, 25-1);
+		g.fillOval(((int) location.getX()) * 25 + 1, ((int) location.getY()) * 25 + 1, 25-1, 25-1);
 		g.setColor(Color.BLACK);
-		g.drawOval(((int) Location.getX()) * 25 +1, ((int) Location.getY()) * 25+1, 25-1, 25-1);
+		g.drawOval(((int) location.getX()) * 25 +1, ((int) location.getY()) * 25+1, 25-1, 25-1);
 	}
 	
 	public Color convertColor( String strColor ) {

@@ -7,7 +7,7 @@ public class HumanPlayer extends Player {
 	public HumanPlayer (String name, String color, Point p) {
 		this.name = name;
 		this.color = color;
-		this.Location = p;
+		this.location = p;
 	}
 	
 	public HumanPlayer() {

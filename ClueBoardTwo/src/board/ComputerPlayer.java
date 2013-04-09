@@ -24,7 +24,14 @@ public class ComputerPlayer extends Player {
 		cardsSeen = new ArrayList<Card>();
 		this.name = name;
 		this.color = color;
-		this.Location = p;
+		this.location = p;
+	}
+	
+	public void makeMove(HashSet<BoardCell> targets) {
+		BoardCell target = pickLocation(targets);
+		int row = target.getRow();
+		int col = target.getColumn();
+		location = new Point(row, col);
 	}
 
 	public BoardCell pickLocation( HashSet<BoardCell> targets ) {
@@ -51,16 +58,9 @@ public class ComputerPlayer extends Player {
 				} else {
 					//store the doorway in lastRoom
 					lastRoom = (RoomCell) b;
-//					int number = Math.random() * 100;
-//					if (number > 95) {
-//						doorsOfTargets.add(tempRoom);
-//					}
 				}
 			}
 		}
-//		//if a doorway to the last visited room is not in our targets
-//		if (lastRoom == null) {
-			//and if we have other doors in our targets
 			if (doorsOfTargets.size() != 0) {
 				//randomly choose one of the other doors as the destination
 				RoomCell newBoardCell = doorsOfTargets.get( (int) Math.random() * doorsOfTargets.size() );
@@ -70,19 +70,6 @@ public class ComputerPlayer extends Player {
 			} else
 				//randomly choose one of the walkway cells
 				return targetsArrayList.get(index);
-		//other wise, if the doorway to the last room visited is not in our targets
-//		} else {
-//			if (doorsOfTargets.size() != 0) {
-//				//randomly choose one of the other doors as the destination
-//				return doorsOfTargets.get( (int) Math.random() * doorsOfTargets.size() );
-//			//if there are no other doors in our targets	
-//			} else
-//				//randomly choose one of the walkway cells
-//				return (BoardCell) targetsArray[index];
-//		}
-		
-		
-		//return new BoardCell();
 	}
 	
 	public Solution createSuggestion() {
