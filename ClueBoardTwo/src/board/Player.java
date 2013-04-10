@@ -59,10 +59,6 @@ public class Player {
 		
 		int randIndex = (int) ( Math.random() * cardsMatchingSuggestion.size() );
 		
-		for (Card p : cards) {
-			System.out.println(p);
-		}
-		
 		return cardsMatchingSuggestion.get(randIndex);
 	}
 	
