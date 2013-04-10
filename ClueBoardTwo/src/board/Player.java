@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Player {
 
@@ -57,6 +58,10 @@ public class Player {
 		}
 		
 		int randIndex = (int) ( Math.random() * cardsMatchingSuggestion.size() );
+		
+		for (Card p : cards) {
+			System.out.println(p);
+		}
 		
 		return cardsMatchingSuggestion.get(randIndex);
 	}

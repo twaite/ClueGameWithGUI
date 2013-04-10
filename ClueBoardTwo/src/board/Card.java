@@ -13,7 +13,8 @@ public class Card {
 	}
 	
 	public Card() {
-		
+		name = "";
+		cardType = CardType.PERSON;
 	}
 	
 	@Override

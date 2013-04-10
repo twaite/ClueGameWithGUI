@@ -12,6 +12,8 @@ import javax.swing.border.TitledBorder;
 
 public class ControlBottomPanel extends JPanel {
 	private JTextField rollReturn;
+	private JTextField guessField;
+	private JTextField resultField;
 
 	public ControlBottomPanel()
 	{
@@ -30,7 +32,7 @@ public class ControlBottomPanel extends JPanel {
 		guess.setBorder(new TitledBorder (new EtchedBorder(), "Guess"));
 		JLabel guessText = new JLabel("Guess");
 		guess.add(guessText);
-		JTextField guessField = new JTextField(10);
+		guessField = new JTextField(20);
 		guessField.setEditable(false);
 		guess.add(guessField);
 		add(guess);
@@ -39,7 +41,7 @@ public class ControlBottomPanel extends JPanel {
 		result.setBorder(new TitledBorder (new EtchedBorder(), "Guess Result"));
 		JLabel resultText = new JLabel("Response");
 		result.add(resultText);
-		JTextField resultField = new JTextField(10);
+		resultField = new JTextField(10);
 		resultField.setEditable(false);
 		result.add(resultField);
 		add(result);	
@@ -47,5 +49,13 @@ public class ControlBottomPanel extends JPanel {
 	
 	public void setRoll(int roll) {
 		rollReturn.setText(Integer.toString(roll));
+	}
+	
+	public void setGuess(Solution guess) {
+		guessField.setText(guess.toString());
+	}
+	
+	public void setResponse(String response) {
+		resultField.setText(response);
 	}
 }

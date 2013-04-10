@@ -52,10 +52,16 @@ public class ControlTopPanel extends JPanel {
 			}
 			
 			public void actionPerformed(ActionEvent e) {
-				if ( !game.getHumanMustFinish() ) {
+				if ( !game.getBoard().getHumanMustFinish() ) {
 					game.nextPlayer();
 					panelTop.setCurrentPlayer(game.getPlayerList().get(game.getTurnIndicator()).getName());
 					panelBot.setRoll(game.getRoll());
+					panelBot.setGuess(game.getLastGuess());
+					if (game.getResponse() != null) {
+						panelBot.setResponse(game.getResponse().getName());
+					} else {
+						panelBot.setResponse("No new card");
+					}
 				} else {
 					String dialogMessage = "You must finish your turn";
 					String dialogTitle = "Error";

@@ -16,11 +16,13 @@ import java.util.Set;
 public class ClueGame {
 
 	private Solution solution = new Solution();
+	private Solution currGuess = new Solution();
 	private Player humanPlayer = new HumanPlayer();
 	private ArrayList<Card> cards = new ArrayList<Card>();
 	private ArrayList<Card> cardsDealt = new ArrayList<Card>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Board board;
+	private Card response = new Card();
 	private int turnIndicator;
 	private int roll;
 	private boolean humanMustFinish;
@@ -30,7 +32,7 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame() {
 		loadConfigFiles("people.txt", "cards.txt");
-		board = new Board("Clue Board.csv", "Legend.txt");
+		board = new Board("Clue Board.csv", "Legend.txt", this);
 		board.loadConfigFiles();
 		board.calcAdjacencies();
 		board.setPlayers(players);
@@ -41,7 +43,7 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame(String peopleFileName, String cardFileName) {
 		loadConfigFiles(peopleFileName, cardFileName);
-		board = new Board("Clue Board.csv", "Legend.txt");
+		board = new Board("Clue Board.csv", "Legend.txt", this);
 		board.loadConfigFiles();
 		board.calcAdjacencies();
 		board.setPlayers(players);
@@ -237,7 +239,6 @@ public class ClueGame {
 //			}
 		}
 
-		
 		return null;
 	}
 	
@@ -267,9 +268,16 @@ public class ClueGame {
 				
 		if ( currentPlayer instanceof ComputerPlayer ) {
 			
-			board.startTargets(location, roll);;
-			((ComputerPlayer) currentPlayer).makeMove(board.getTargets());
+			board.startTargets(location, roll);
+			((ComputerPlayer) currentPlayer).makeMove(board.getTargets());			
 			board.repaint();
+			
+			if ( cells.get(location).isRoom() ) {
+				currGuess = ((ComputerPlayer) currentPlayer).createSuggestion();
+				response = handleSuggestion(currGuess.getPerson(), currGuess.getRoom(), 
+								currGuess.getWeapon(), currentPlayer);
+				
+			}
 			
 		} else if ( currentPlayer instanceof HumanPlayer) {
 			board.setHumanMustFinish(true);
@@ -279,10 +287,8 @@ public class ClueGame {
 				index = board.calcIndex(cell.getRow(), cell.getColumn());
 				cells.get(index).setIsHumanTarget(true);
 			}
-			
 			board.repaint();
 		}
-		
 		if ( !board.getHumanMustFinish() ) {
 			turnIndicator = (turnIndicator + 1) % players.size();
 		}
@@ -328,5 +334,17 @@ public class ClueGame {
 	
 	public boolean getHumanMustFinish() {
 		return humanMustFinish;
+	}
+	
+	public Solution getLastGuess() {
+		return currGuess;
+	}
+	
+	public Card getResponse() {
+		return response;
+	}
+	
+	public void setTurnIndicator(int newIndicator) {
+		turnIndicator = newIndicator;
 	}
 }
