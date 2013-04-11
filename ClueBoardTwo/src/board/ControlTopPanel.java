@@ -73,8 +73,27 @@ public class ControlTopPanel extends JPanel {
 		nextPlayer.addActionListener(new ButtonListener(game, this, bottom));
 		add(nextPlayer);
 		
+		class accusationButtonListener implements ActionListener {
+			private ClueGame game;
+			private ControlBottomPanel bottom;
+			
+			public accusationButtonListener(ClueGame game, ControlBottomPanel bottom) {
+				this.game = game;
+				this.bottom = bottom;
+			}
+			
+			public void actionPerformed(ActionEvent e) {
+				if ((game.getPlayerList().get(game.getTurnIndicator()) instanceof HumanPlayer) && !game.getPlayerMoved()) {
+					GuessDialog makeAccusation = new GuessDialog(null, true, game.getCardList(), game, bottom);
+					makeAccusation.setVisible(true);
+					game.setTurnIndicator(game.getTurnIndicator() + 1);
+				}
+			}
+		}
+		
 		//Add the accusation button.
 		JButton accusationButton = new JButton("Make an accusation");
+		accusationButton.addActionListener(new accusationButtonListener(game, bottom));
 		add(accusationButton);
 	}
 	

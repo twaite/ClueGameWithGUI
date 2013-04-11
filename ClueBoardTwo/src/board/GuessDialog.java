@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 public class GuessDialog extends JDialog {
 	public String roomName;
@@ -74,23 +75,30 @@ public class GuessDialog extends JDialog {
 				this.bottom = bottom;
 				
 			}
+			
 			public void actionPerformed(ActionEvent e) {
 				Player accusingPlayer = game.getPlayerList().get(game.getTurnIndicator());
 				if ( isAccusation ) {
-					game.handleSuggestion((String) gd.playerList.getSelectedItem(),(String)  gd.weaponList.getSelectedItem(), 
-							(String) gd.roomList.getSelectedItem(), accusingPlayer);
-					dispose();
+					solution = new Solution((String) gd.playerList.getSelectedItem(),(String) gd.roomList.getSelectedItem(),
+							(String) gd.weaponList.getSelectedItem());
+					if ( game.checkAccusation(solution) ) {
+						setVisible(false);
+						game.getBoard().endGame(game.getPlayerList().get(game.getTurnIndicator()).getName(), "You Win.");
+						System.exit(0);
+					} else {
+						setVisible(false);
+						game.getBoard().invalidSolution();
+						dispose();
+					}
 				}
 				else {
-					game.handleSuggestion((String) gd.playerList.getSelectedItem(),(String) gd.weaponList.getSelectedItem(), 
-							gd.roomName, accusingPlayer);
-					System.out.println("Player: " + gd.playerList.getSelectedItem() + 
-							"Weapon: " + gd.weaponList.getSelectedItem() + "Room: " + 
-							gd.roomName);
-					solution = new Solution((String) gd.playerList.getSelectedItem(),(String) gd.weaponList.getSelectedItem(), gd.roomName);
+					Card response = game.handleSuggestion((String) gd.playerList.getSelectedItem(),
+							(String) gd.weaponList.getSelectedItem(), gd.roomName, accusingPlayer);
+					game.setResponse(response);
+					solution = new Solution((String) gd.playerList.getSelectedItem(),
+							(String) gd.weaponList.getSelectedItem(), gd.roomName);
 					bottom.setGuess(solution);
 					if (game.getResponse() != null) {
-						System.out.println("Hello");
 						bottom.setResponse(game.getResponse().getName());
 					} else {
 						bottom.setResponse("No new card");

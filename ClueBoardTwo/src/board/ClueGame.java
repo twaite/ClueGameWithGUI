@@ -27,6 +27,7 @@ public class ClueGame {
 	private int turnIndicator;
 	private int roll;
 	private boolean humanMustFinish;
+	private boolean playerMoved;
 	private GUI frame;
 	
 	/************************************************************************************************************
@@ -89,6 +90,7 @@ public class ClueGame {
 		}
 		
 		solution = new Solution(person, room, weapon);
+		System.out.println(solution);
 			
 		int i = 0;
 		while( c.size() > 0) {
@@ -322,6 +324,7 @@ public class ClueGame {
 			}
 			
 		} else if ( currentPlayer instanceof HumanPlayer) {
+			playerMoved = false;
 			board.setHumanMustFinish(true);
 			board.startTargets(location, roll);
 			
@@ -332,6 +335,7 @@ public class ClueGame {
 			
 			board.repaint();
 		}
+		
 		if ( !board.getHumanMustFinish() ) {
 			turnIndicator = (turnIndicator + 1) % players.size();
 		}
@@ -393,5 +397,21 @@ public class ClueGame {
 	
 	public void setCurrentGuess(Solution guess) {
 		currGuess = guess;
+	}
+	
+	public void setResponse(Card response) {
+		this.response = response;
+	}
+	
+	public Solution getSolution() {
+		return solution;
+	}
+	
+	public boolean getPlayerMoved() {
+		return playerMoved;
+	}
+	
+	public void setPlayerMoved(boolean moved) {
+		playerMoved = moved;
 	}
 }

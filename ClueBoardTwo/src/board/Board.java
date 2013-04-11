@@ -373,6 +373,7 @@ public class Board extends JPanel{
 					String dialogTitle = "Error";
 					JOptionPane.showMessageDialog(board, dialogMessage, dialogTitle, JOptionPane.INFORMATION_MESSAGE);
 				} else if (cell.getIsHumanTarget() && cell.containsClick(clicked)) {
+					game.setPlayerMoved(true);
 					players.get(0).setLocation(cell.getLocation());
 					for ( BoardCell b : targets ) {
 						index = calcIndex(b.getRow(), b.getColumn());
@@ -401,8 +402,14 @@ public class Board extends JPanel{
 	}
 	
 	public void endGame(String playerName, String winLoss) {
-		String dialogMessage = "The game is over, " + playerName + "has won!";
+		String dialogMessage = "The game is over, " + playerName + " has won!";
 		JOptionPane.showMessageDialog(this, dialogMessage, winLoss, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void invalidSolution() {
+		String err = "Error";
+		String dialogMessage = "Sorry, that is not the solution.";
+		JOptionPane.showMessageDialog(this, dialogMessage, err, JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void guessBox(boolean isAccusation) {
