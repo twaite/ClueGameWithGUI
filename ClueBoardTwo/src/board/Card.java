@@ -9,7 +9,7 @@ public class Card {
 
 	@Override
 	public String toString() {
-		return "Card [name=" + name + ", cardType=" + cardType + "]\n";
+		return "Card [name = " + name + ", cardType = " + cardType + "]";
 	}
 	
 	public Card() {
@@ -29,7 +29,7 @@ public class Card {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		/*if (this == obj)
 			return true;
 		if (obj == null)
 			return false;
@@ -43,7 +43,15 @@ public class Card {
 				return false;
 		} else if (!name.equals(other.name))
 			return false;
-		return true;
+		return true;*/
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (obj instanceof Card) {
+			if ( name.equals(((Card) obj).getName()) && cardType == ((Card) obj).getCardType()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public Card( String name, CardType cardType ) {
@@ -64,7 +72,7 @@ public class Card {
 	}
 	
 	public CardType getCardType() {
-		return cardType;
+		return this.cardType;
 	}
 	
 	///EQUALS METHOD

@@ -17,6 +17,7 @@ public class ClueGame {
 
 	private Solution solution = new Solution();
 	private Solution currGuess = new Solution();
+	private Solution unDeniedGuess = new Solution();
 	private Player humanPlayer = new HumanPlayer();
 	private ArrayList<Card> cards = new ArrayList<Card>();
 	private ArrayList<Card> cardsDealt = new ArrayList<Card>();
@@ -225,8 +226,10 @@ public class ClueGame {
 			matchedCard = p.disproveSuggestion(person, weapon, room);
 			
 			if ( matchedCard != null) {
-				if (accusingPlayer instanceof ComputerPlayer) {
-					((ComputerPlayer) accusingPlayer).updateSeen(matchedCard);
+				for ( Player pl : players2 ) {
+					if (pl instanceof ComputerPlayer) {
+						((ComputerPlayer) pl).updateSeen(matchedCard);
+					}
 				}
 				/////////////////////////////////////////////////////////////////////////
 				//MAY NEED TO UPDATE THE HUMAN PLAYER'S SEEN CARDS LIST HERE AS WELL
@@ -268,15 +271,45 @@ public class ClueGame {
 				
 		if ( currentPlayer instanceof ComputerPlayer ) {
 			
-			board.startTargets(location, roll);
-			((ComputerPlayer) currentPlayer).makeMove(board.getTargets());			
-			board.repaint();
-			
-			if ( cells.get(location).isRoom() ) {
-				currGuess = ((ComputerPlayer) currentPlayer).createSuggestion();
-				response = handleSuggestion(currGuess.getPerson(), currGuess.getRoom(), 
-								currGuess.getWeapon(), currentPlayer);
+			if (response == null) {
 				
+				if( checkAccusation(currGuess) ) {
+					board.endGame(currentPlayer.getName(), "You lose.");
+				} else {
+					response = new Card();
+				}
+				
+			} else {
+			
+				board.startTargets(location, roll);
+				((ComputerPlayer) currentPlayer).makeMove(board.getTargets());
+				board.repaint();
+				
+				row = (int) currentPlayer.getLocation().getY();
+				col = (int) currentPlayer.getLocation().getX();
+				location = board.calcIndex(row, col);
+				
+				
+				if ( cells.get(location).isRoom() ) {
+					currGuess = ((ComputerPlayer) currentPlayer).createSuggestion();
+					for ( Player p : players ) {
+						if (p.getName().equals(currGuess.getPerson())) { 
+							p.setLocation(currentPlayer.getLocation());
+						}
+					}
+					
+					RoomCell tempCell = (RoomCell) cells.get(location);
+					((ComputerPlayer) currentPlayer).setLastRoomVisited(tempCell.getInitial());
+					
+					board.repaint();
+					
+					response = handleSuggestion(currGuess.getPerson(), currGuess.getWeapon(), 
+									currGuess.getRoom(), currentPlayer);
+					if (response == null) {
+						unDeniedGuess = currGuess; 
+					}
+					
+				}
 			}
 			
 		} else if ( currentPlayer instanceof HumanPlayer) {
@@ -287,6 +320,7 @@ public class ClueGame {
 				index = board.calcIndex(cell.getRow(), cell.getColumn());
 				cells.get(index).setIsHumanTarget(true);
 			}
+			
 			board.repaint();
 		}
 		if ( !board.getHumanMustFinish() ) {

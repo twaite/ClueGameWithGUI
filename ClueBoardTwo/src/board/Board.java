@@ -13,6 +13,7 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Scanner;
 
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -390,5 +391,15 @@ public class Board extends JPanel{
 		public void mouseReleased (MouseEvent event) {}
 		public void mouseEntered (MouseEvent event) {}
 		public void mouseExited (MouseEvent event) {}
+	}
+	
+	public void endGame(String playerName, String winLoss) {
+		String dialogMessage = "The game is over, " + playerName + "has won!";
+		JOptionPane.showMessageDialog(this, dialogMessage, winLoss, JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	public void guessBox(boolean isAccusation) {
+		JDialog guess = new JDialog();
+
 	}
 }

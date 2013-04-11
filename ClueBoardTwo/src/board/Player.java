@@ -44,21 +44,24 @@ public class Player {
 		Card roomCard = new Card(room, Card.CardType.ROOM);
 		ArrayList<Card> cardsMatchingSuggestion = new ArrayList<Card>();
 		
-		if (cards.contains(personCard)) {
-			cardsMatchingSuggestion.add(personCard);
+		for (Card card : cards ) {
+			if (card.getName().equals(personCard.getName()) && card.getCardType() == Card.CardType.PERSON) {
+				cardsMatchingSuggestion.add(personCard);
+			}
+			if (card.getName().equals(weaponCard.getName()) && card.getCardType() == Card.CardType.WEAPON) {
+				cardsMatchingSuggestion.add(weaponCard);
+			}
+			if (card.getName().equals(roomCard.getName()) && card.getCardType() == Card.CardType.ROOM) {
+				cardsMatchingSuggestion.add(roomCard);
+			}
 		}
-		if (cards.contains(weaponCard)) {
-			cardsMatchingSuggestion.add(weaponCard);
-		}
-		if (cards.contains(roomCard)) {
-			cardsMatchingSuggestion.add(roomCard);
-		}
+		
 		if ( cardsMatchingSuggestion.size() == 0) {
 			return null;
 		}
 		
-		int randIndex = (int) ( Math.random() * cardsMatchingSuggestion.size() );
-		
+		Random rand = new Random();
+		int randIndex = rand.nextInt(cardsMatchingSuggestion.size());
 		return cardsMatchingSuggestion.get(randIndex);
 	}
 	

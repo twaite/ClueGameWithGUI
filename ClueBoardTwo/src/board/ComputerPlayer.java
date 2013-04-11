@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class ComputerPlayer extends Player {
 	ArrayList<Card> cardsSeen;
+	private Solution lastSuggestion;
 	private char lastRoomInitial;	
 	
 	public ComputerPlayer() {
@@ -140,7 +141,7 @@ public class ComputerPlayer extends Player {
 		
 		}
 		
-		
+		lastSuggestion = suggestion;
 		return suggestion;
 	
 	}
@@ -159,5 +160,9 @@ public class ComputerPlayer extends Player {
 	
 	public void setLastRoomInitial(char init) {
 		lastRoomInitial = init;
+	}
+	
+	public Solution getLastSuggestion() {
+		return lastSuggestion;
 	}
 }
