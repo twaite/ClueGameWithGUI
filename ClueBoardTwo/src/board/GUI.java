@@ -18,9 +18,10 @@ public class GUI extends JFrame {
 	private DetectiveNotes notes;
 	private GameControlGUI control;
 	private PlayerCardPanel cards;
+	private ControlBottomPanel bottom;
 	
 	public GUI() {
-		clue = new ClueGame();
+		clue = new ClueGame(this);
 		board = clue.getBoard();
 		control = new GameControlGUI(clue);
 		clue.deal();
@@ -35,7 +36,7 @@ public class GUI extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		menuBar.add(createFileMenu());
-		
+		bottom = control.panelSouth;
 	}
 	
 	public static void main(String[] args) {
@@ -73,5 +74,8 @@ public class GUI extends JFrame {
 		}
 		item.addActionListener(new MenuItemListener());
 		return item;
+	}
+	public ControlBottomPanel getControlBottomPanel() {
+		return bottom;
 	}
 }

@@ -23,17 +23,26 @@ public class ClueGame {
 	private ArrayList<Card> cardsDealt = new ArrayList<Card>();
 	private ArrayList<Player> players = new ArrayList<Player>();
 	private Board board;
-	private Card response = new Card();
+	private Card response;
 	private int turnIndicator;
 	private int roll;
 	private boolean humanMustFinish;
+	private GUI frame;
 	
 	/************************************************************************************************************
  	* Default constructor
  	************************************************************************************************************/
 	public ClueGame() {
 		loadConfigFiles("people.txt", "cards.txt");
-		board = new Board("Clue Board.csv", "Legend.txt", this);
+		board = new Board("Clue Board.csv", "Legend.txt");
+		board.loadConfigFiles();
+		board.calcAdjacencies();
+		board.setPlayers(players);
+	}
+	
+	public ClueGame(GUI frame) {
+		loadConfigFiles("people.txt", "cards.txt");
+		board = new Board("Clue Board.csv", "Legend.txt", this, frame);
 		board.loadConfigFiles();
 		board.calcAdjacencies();
 		board.setPlayers(players);
@@ -44,7 +53,7 @@ public class ClueGame {
  	************************************************************************************************************/
 	public ClueGame(String peopleFileName, String cardFileName) {
 		loadConfigFiles(peopleFileName, cardFileName);
-		board = new Board("Clue Board.csv", "Legend.txt", this);
+		board = new Board("Clue Board.csv", "Legend.txt");
 		board.loadConfigFiles();
 		board.calcAdjacencies();
 		board.setPlayers(players);

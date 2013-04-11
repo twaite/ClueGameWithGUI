@@ -36,6 +36,7 @@ public class Board extends JPanel{
 	private boolean[] visited;
 	ArrayList<Player> players;
 	private ClueGame game;
+	GUI frame;
 	
 	public Board() {
 		cells = new ArrayList<BoardCell>();
@@ -59,7 +60,7 @@ public class Board extends JPanel{
 		addMouseListener(new BoardListener(this));
 	}
 	
-	public Board(String board, String legend, ClueGame game ) {
+	public Board(String board, String legend, ClueGame game, GUI frame ) {
 		cells = new ArrayList<BoardCell>();
 		rooms = new HashMap<Character, String>();
 		targets = new HashSet<BoardCell>();
@@ -69,6 +70,7 @@ public class Board extends JPanel{
 		this.game = game;
 		visited = new boolean[ROWS * COLS];
 		addMouseListener(new BoardListener(this));
+		this.frame = frame;
 	}
 	
 	public void loadConfigFiles() {
@@ -385,7 +387,7 @@ public class Board extends JPanel{
 					if (cell.isRoom()) {
 						RoomCell tempCell = (RoomCell) cell;
 						String roomName = rooms.get(tempCell.getInitial());
-						GuessDialog makeGuess = new GuessDialog(roomName, false, game.getCardList(), game);
+						GuessDialog makeGuess = new GuessDialog(roomName, false, game.getCardList(), game, frame.getControlBottomPanel());
 						makeGuess.setVisible(true);
 					}
 				}

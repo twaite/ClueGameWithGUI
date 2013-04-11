@@ -17,7 +17,7 @@ public class GuessDialog extends JDialog {
 	public JComboBox playerList;
 	public JComboBox weaponList;
 	
-	public GuessDialog(String roomName, boolean isAccusation, ArrayList<Card> cards, ClueGame game) {
+	public GuessDialog(String roomName, boolean isAccusation, ArrayList<Card> cards, ClueGame game, ControlBottomPanel bottom) {
 		this.roomName = roomName;
 		setTitle("Make a Guess");
 		setSize(300,200);
@@ -63,12 +63,16 @@ public class GuessDialog extends JDialog {
 			ClueGame game;
 			boolean isAccusation;
 			GuessDialog gd;
+			ControlBottomPanel bottom;
+			Solution solution;
 			
-			public SubmitButtonListener(ClueGame game, boolean isAccusation, GuessDialog gd) {
+			public SubmitButtonListener(ClueGame game, boolean isAccusation, GuessDialog gd, ControlBottomPanel bottom) {
 				super();
 				this.game = game;
 				this.isAccusation = isAccusation;
 				this.gd = gd;
+				this.bottom = bottom;
+				
 			}
 			public void actionPerformed(ActionEvent e) {
 				Player accusingPlayer = game.getPlayerList().get(game.getTurnIndicator());
@@ -80,10 +84,24 @@ public class GuessDialog extends JDialog {
 				else {
 					game.handleSuggestion((String) gd.playerList.getSelectedItem(),(String) gd.weaponList.getSelectedItem(), 
 							gd.roomName, accusingPlayer);
+					System.out.println("Player: " + gd.playerList.getSelectedItem() + 
+							"Weapon: " + gd.weaponList.getSelectedItem() + "Room: " + 
+							gd.roomName);
+					solution = new Solution((String) gd.playerList.getSelectedItem(),(String) gd.weaponList.getSelectedItem(), gd.roomName);
+					bottom.setGuess(solution);
+					if (game.getResponse() != null) {
+						System.out.println("Hello");
+						bottom.setResponse(game.getResponse().getName());
+					} else {
+						bottom.setResponse("No new card");
+					}
 					dispose();
 				}
 			}
 		}
+		JButton submit = new JButton("Submit");
+		submit.addActionListener(new SubmitButtonListener(game, isAccusation, this, bottom));
+		add(submit);
 		
 		class CancelButtonListener implements ActionListener {
 					
@@ -94,11 +112,8 @@ public class GuessDialog extends JDialog {
 				dispose();
 			}
 		}
-		JButton submit = new JButton("Submit");
 		JButton cancel = new JButton("Cancel");
-		submit.addActionListener(new SubmitButtonListener(game, isAccusation, this));
 		cancel.addActionListener(new CancelButtonListener());
-		add(submit);
 		add(cancel);
 	}
 
