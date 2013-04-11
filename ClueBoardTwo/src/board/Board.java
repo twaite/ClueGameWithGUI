@@ -382,7 +382,12 @@ public class Board extends JPanel{
 					int newIndicator;
 					newIndicator = (game.getTurnIndicator() + 1) % players.size();
 					game.setTurnIndicator(newIndicator);
-				
+					if (cell.isRoom()) {
+						RoomCell tempCell = (RoomCell) cell;
+						String roomName = rooms.get(tempCell.getInitial());
+						GuessDialog makeGuess = new GuessDialog(roomName, false, game.getCardList(), game);
+						makeGuess.setVisible(true);
+					}
 				}
 			}
 		}

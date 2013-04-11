@@ -381,4 +381,8 @@ public class ClueGame {
 	public void setTurnIndicator(int newIndicator) {
 		turnIndicator = newIndicator;
 	}
+	
+	public void setCurrentGuess(Solution guess) {
+		currGuess = guess;
+	}
 }
